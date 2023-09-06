@@ -19,7 +19,7 @@
         <button class="close" @click="removeWindow({ id })">x</button>
       </div>
     </div>
-    <div class="window-content"  v-if="!getClosed">
+    <div class="window-content" v-if="!getClosed">
       <slot></slot>
     </div>
   </div>
@@ -196,16 +196,16 @@ export default defineComponent({
 .window {
   position: absolute;
   background-color: #3f4455;
-  border: 2px solid #000;
+  border: 1px solid #000;
   min-width: 200px;
   min-height: 100px;
   /* cursor: move; */
   /* user-select: none; */
   font-family: "Tahoma", sans-serif;
-  border: 2px solid #000;
 }
 .window.focused {
   border-color: rgb(146, 146, 146);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
 }
 
 .window-title {

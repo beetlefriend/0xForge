@@ -5,7 +5,7 @@
         <div class="start-menu-item">
           Programs
           <ul class="start-menu-sub">
-            <li class="start-menu-sub-item" @click="openSuperMario">
+            <!-- <li class="start-menu-sub-item" @click="openSuperMario">
               <img src="@/assets/Mario.png" class="start-menu-icon" />
               Super Mario
             </li>
@@ -19,7 +19,7 @@
                 class="start-menu-icon"
               />
               Uniswap
-            </li>
+            </li> -->
             <li class="start-menu-sub-item" @click="openWinamp">
               <img
                 src="https://pawelporwisz.pl/winamp/img/wip/wi.png"
@@ -34,11 +34,11 @@
         <div class="start-menu-item">
           Documents
           <ul class="start-menu-sub">
-            <li class="start-menu-sub-item" @click="openTokemomics">
+            <li class="start-menu-sub-item" @click="openYepText">
               <img src="@/assets/icons/icon.png" class="start-menu-icon" />
-              Tokenomics.txt
+              Yep.txt
             </li>
-            <li class="start-menu-sub-item" @click="openAbout">
+            <!-- <li class="start-menu-sub-item" @click="openAbout">
               <img src="@/assets/icons/icon.png" class="start-menu-icon" />
               About.txt
             </li>
@@ -49,7 +49,7 @@
             <li class="start-menu-sub-item" @click="openYeetWindow">
               <img src="@/assets/logo.png" class="start-menu-icon" />
               Yeet.png
-            </li>
+            </li> -->
           </ul>
         </div>
       </li>
@@ -91,51 +91,58 @@ export default {
     openHelp() {
       window.open("https://chat.openai.com/", "_blank", "noopener noreferrer");
     },
-    openUniswap() {
-      this.$store.dispatch("openWindow", {
-        id: 6,
-      });
-    },
-    openSuperMario() {
-      // code to open Super Mario here
-            this.$store.dispatch("openWindow", {
-        id: 7,
-      });
-    },
-    openTetris() {
-      // code to open Super Mario here
-            this.$store.dispatch("openWindow", {
-        id: 8,
-      });
-    },
+    // openUniswap() {
+    //   this.$store.dispatch("openWindow", {
+    //     id: 6,
+    //   });
+    // },
+    // openSuperMario() {
+    //   // code to open Super Mario here
+    //   this.$store.dispatch("openWindow", {
+    //     id: 7,
+    //   });
+    // },
+    // openTetris() {
+    //   // code to open Super Mario here
+    //   this.$store.dispatch("openWindow", {
+    //     id: 8,
+    //   });
+    // },
     openWinamp() {
-    //   console.log("attempting to open winamp");
+      //   console.log("attempting to open winamp");
       this.$emit("open-winamp");
     },
     // Documents submenu methods
-    openTokemomics() {
-      // code to open Tokemomics.txt here'
-      this.$store.dispatch("openWindow", {
-        id: 5,
-      });
-    },
-    openAbout() {
+    // openTokemomics() {
+    //   // code to open Tokemomics.txt here'
+    //   this.$store.dispatch("openWindow", {
+    //     id: 5,
+    //   });
+    // },
+    // openAbout() {
+    //   // code to open About.txt here
+    //   this.$store.dispatch("openWindow", {
+    //     id: 3,
+    //   });
+    // },
+    openYepText() {
       // code to open About.txt here
       this.$store.dispatch("openWindow", {
         id: 3,
       });
     },
-    openRoadmap() {
-      // code to open Roadmap.txt here
-      this.$store.dispatch("openWindow", {
-        id: 4,
-      });
-    },
-    openYeetWindow() {
-      this.$store.dispatch("openWindow", {
-        id: 2,
-      });
-    },
+
+    // openRoadmap() {
+    //   // code to open Roadmap.txt here
+    //   this.$store.dispatch("openWindow", {
+    //     id: 4,
+    //   });
+    // },
+    // openYeetWindow() {
+    //   this.$store.dispatch("openWindow", {
+    //     id: 2,
+    //   });
+    // },
   },
 };
 </script>
@@ -144,11 +151,12 @@ export default {
   position: fixed;
   bottom: 40px;
   left: 0px;
-  background-color: #3f4455;
+  background-color: #2b2e3a;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
   width: 200px;
   height: 300px;
   z-index: 9999;
+  opacity: 0.9;
   font-family: "Tahoma", sans-serif;
   font-size: 12px;
 }
@@ -183,7 +191,7 @@ export default {
 .start-menu-sub {
   display: none;
   position: absolute;
-  top: 0;
+  top: -5px;
   left: 100%;
   background-color: #3f4455;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);

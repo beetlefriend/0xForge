@@ -16,796 +16,44 @@
         <!-- window content here -->
         <template v-if="window.id === 1">
           <div>
-            <v-card elevation="0" color="transparent">
-              <v-card-text> /cmd/run/drinkthekoolaid.exe </v-card-text>
-              <div class="social-buttons">
-                <a href="https://twitter.com/yeet_dao">
-                  <v-btn rounded>
-                    <img
-                      src="../assets/tw.png"
-                      alt="Telegram Icon"
-                      width="20"
-                      height="20"
-                    /> </v-btn
-                ></a>
-                <a href="https://t.me/yeet_dao">
-                  <v-btn rounded>
-                    <img
-                      src="../assets/tg.png"
-                      alt="Telegram Icon"
-                      width="34"
-                      height="34"
-                    />
-                  </v-btn>
-                </a>
-              </div>
-            </v-card>
-          </div>
-        </template>
-
-        <template v-if="window.id === 10">
-          <div>
-            <v-card elevation="0" color="transparent">
-              <v-card-text><pre> 3 New files downloaded </pre></v-card-text>
+            <v-card elevation="0" color="transparent" width="400px">
+              <v-card-text>
+                Welcome to 0xForge! This site is still in development and will
+                be available for public use soon. Follow us on
+                <a href="https://twitter.com "> twitter </a>
+              </v-card-text>
             </v-card>
           </div>
         </template>
 
         <template v-else-if="window.id === 2">
-          <img
-            src="../assets/logo.png"
-            alt="Logo"
-            width="400px"
-            style="padding-top: 5px"
-          />
-        </template>
-
-        <template v-else-if="window.id === 3">
-          <v-card width="600" color="transparent" elevation="0">
-            <!-- <v-card-title>About</v-card-title> -->
-            <v-card-text class="about-text" v-if="showAbout">
-              <h3>1. What is YEET DAO?</h3>
-              <br />
-              <p>
-                A project bringing together the best DeFi and NFT communities in
-                crypto. A lot of groups in crypto 'just don't have it' - but
-                [redacted] and [redacted] do. We want to give back to the
-                spheres that keep people around, and look out for any other
-                winning teams we might've missed.
-              </p>
-
-              <h3>2. Who is YEET DAO?</h3>
-              <br />
-              <p>
-                YEET DAO consists of a team of war-torn veterans who've been in
-                the space since 2011. They've seen red candles most people
-                couldn't dream up in their worst nightmares. They've received
-                liquidation notices via carrier pigeon, only to turn around and
-                make it all back again. Now that they're grown and responsible
-                adults, they've accepted that the most powerful blockchain
-                technology developed so far is a community of token holders who
-                don't make you feel embarrassed to be associated with them. Our
-                goal is to find as many of these people as possible.
-              </p>
-
-              <br />
-              <h3>3. Phase 1 of YEET DAO:</h3>
-
-              <br />
-              <p>
-                The blockchain has a major weakness - value isn't rewarded
-                fairly off-chain. Posters who bring the most to a community
-                aren't compensated unless they've already secured equity.
-                Unfortunately, most power-posters are completely broke; this is
-                likely related to how they have time to shitpost all day. This
-                means they rarely hold much of the asset they're promoting, and
-                they see almost no return for their community-building efforts.
-                Our goal is simple: fix this. By giving valuable community
-                members stake in the communities they're representing, we
-                accomplish 2 things: Pump your bags. If you think the NEETs are
-                good at shilling your bags now, how good do you think they'd be
-                if they had bags of their own? Retain your talent. Value needs
-                to be rewarded. If you don't pay the community members who keep
-                people around, someone else will notice they're good at what
-                they do and snipe them. How do we do this? Sweeping assets and
-                giving them to the people who keep the community alive - either
-                for free, or at a discount through exclusive auctions and
-                minigames. The people who pump everyone elses' bags deserve to
-                be given some bags of their own.
-              </p>
-
-              <h3>4. Phase 2: DAO as a nexus:</h3>
-              <br />
-              <p>
-                There's a second social arbitrage the DAO wants to solve.
-                Powerautists often have genius ideas they're unable to execute -
-                autism rarely exists alongside business instincts. The DAO will
-                act as a hub to connect community powerautists with people who
-                can build out their ideas. When these projects approach launch,
-                holders get exclusive access to seed rounds.
-              </p>
-
-              <br />
-              <h3>5. “we like the cults”</h3>
-              <br />
-              <p>
-                Since the dawn of the internet, authentic subcultures have been
-                emerging. These communities are the authentic radicals, the free
-                thinkers and the self-taught creators. Those that lean into
-                absurdity or create something new with integrity, rather than
-                repeating and replaying with a reliance on marketing money. YEET
-                wants to recognise, support and connect those who build culture,
-                allowing them to grow their finances too.
-              </p>
-            </v-card-text>
-            <div v-else>
-              <p style="margin-left: 20px; margin-top: 20px">
-                Password Protected
-              </p>
-              <p style="color: red; margin-left: 20px">
-                {{ showAboutIncorrect ? "Incorrect..." : "" }}
-              </p>
-              <div style="display: flex; flex-direction: row; margin: 20px">
-                <v-text-field
-                  outlined
-                  single-line
-                  dense
-                  :error="showAboutIncorrect ? true : false"
-                  v-model="aboutpass"
-                  type="password"
-                  @keypress.enter="checkAboutpass"
-                >
-                </v-text-field>
-                <v-btn
-                  outlined
-                  depressed
-                  dense
-                  style="margin-top: 2px; margin-left: 20px"
-                  @click="checkAboutpass"
-                >
-                  Submit
-                </v-btn>
-              </div>
-            </div>
-          </v-card>
-        </template>
-
-        <template v-else-if="window.id === 4">
-          <v-card width="600" elevation="0" color="transparent">
-            <v-card-text class="roadmap-text" v-if="!showRoadpmap">
-              <h3>Phase 1: Staking, Auctions and Minigames</h3>
-              <br />
-              <p>
-                Staking: Staking DAO tokens allows you to become a member of the
-                DAO and participate in all DAO activities. Your staked balance
-                can be thought of as your bank account, and all DAO transactions
-                are paid out of it. Be careful, though - if you let your staked
-                balance fall below the amount required for DAO membership, you
-                will be unable to participate in DAO activities. Staked tokens
-                are locked for 7 days, and that counter resets when you add more
-                to your balance. No $YEET tokens are burned when you run
-                “drinkthekool-aid.exe” (stake) but 6% of $YEET is burned when
-                you run “returntoreality.exe” (unstake). Because as we all know,
-                it's not easy to leave cults.
-              </p>
-              <h3>Auctions:</h3>
-              <br />
-              <p>
-                Auctions are going to be a core part of the way we distribute
-                resources in a community. We want to give engaged posters a
-                chance to acquire assets they like at a discount. When a member
-                bids: 5% of each bid amount goes to the bid pool. The winning
-                bid receives the NFT and 20% of the bid pool. 80% of the $YEET
-                from the bid pool is burned. Minigames: [redacted] is launched,
-                an arcade style minigame where the player avoids obstacles and
-                collects items. It will contain some on-chain and off-chain
-                aspects to track scores on a leaderboard. The winner will be
-                rewarded with whatever NFT the DAO is currently featuring (which
-                will be known in advance).
-              </p>
-
-              <h3>Social-Games/Experiments:</h3>
-              <br />
-              <p>
-                Beyond actual games, we want to bring some fun to the timeline.
-                Psyops are what hold the world together, and we want to
-                encourage their proliferation throughout our community. How do
-                we do this? Financialized social media antics. Sometimes
-                cooperative, sometimes PvP, we'll put something together that
-                appeals to everyone who likes fun.
-              </p>
-              <br />
-              <h3>Phase 2: Full DAO Launch</h3>
-
-              <p>
-                Phase 2 comes when the DAO emerges as an information hub and
-                development platform.
-              </p>
-
-              <p>
-                1. The DAO will act as a cross pollinator, connecting
-                powerautists with the capital and business development teams
-                they need in order to make their projects a reality. We'll host
-                a “house of 'tism” where we let DAO autists pitch their
-                ideas/projects to each other and give the community early
-                investment opportunities in the projects they like best.
-              </p>
-              <p>
-                2. The DAO will introduce voting on which NFTs to: Burn,
-                Purchase, Auction, Giveaway, Fractionalize along with what
-                Social and Minigames to introduce to the community.
-              </p>
-
-              <h3>Phase 3: [redacted]</h3>
-            </v-card-text>
-            <div v-else>
-              <p style="margin-left: 20px; margin-top: 20px">
-                Password Protected
-              </p>
-              <p style="color: red; margin-left: 20px">
-                {{ showRoadIncorrect ? "Incorrect..." : "" }}
-              </p>
-              <div style="display: flex; flex-direction: row; margin: 20px">
-                <v-text-field
-                  outlined
-                  single-line
-                  :error="showRoadIncorrect ? true : false"
-                  dense
-                  v-model="roadpass"
-                  type="password"
-                  @keypress.enter="checkRoadpass"
-                >
-                </v-text-field>
-                <v-btn
-                  outlined
-                  depressed
-                  dense
-                  style="margin-top: 2px; margin-left: 20px"
-                  @click="checkRoadpass"
-                >
-                  Submit
-                </v-btn>
-              </div>
-            </div>
-          </v-card>
-        </template>
-
-        <template v-else-if="window.id === 6">
-          <iframe
-            src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0&inputCurrency=0x429acA1cCd47296483D1281c85B24e842de0b758"
-            height="500"
-            width="100%"
-            style="
-              border: 0;
-              margin: 0 auto;
-              margin-bottom: 0.5rem;
-              display: block;
-              border-radius: 10px;
-              max-width: 960px;
-              min-width: 500px;
-            "
-          />
-        </template>
-
-        <template v-else-if="window.id === 5">
-          <v-card width="600" color="transparent" elevation="0">
-            <v-card-text class="tokenomics-text" v-if="showTokenomics">
-              <h3>Supply:</h3>
-              <p>420,069,000</p>
-              <br />
-              <h3>Tax</h3>
-              <p>0.69% / 0.69%</p>
-              <br />
-              <h3>Token Distribution:</h3>
-
-              <p>6.9% Team</p>
-              <p>6.9% CEX</p>
-              <p>
-                23.1% Foundation (Marketing, Airdrops, Project Maintenance,
-                etc.)
-              </p>
-              <p>28% LP</p>
-              <p>35.1% Presale</p>
-            </v-card-text>
-            <div v-else>
-              <p style="margin-left: 20px; margin-top: 20px">
-                Password Protected
-              </p>
-              <p style="color: red; margin-left: 20px">
-                {{ showTokenIncorrect ? "Incorrect..." : "" }}
-              </p>
-              <div style="display: flex; flex-direction: row; margin: 20px">
-                <v-text-field
-                  outlined
-                  single-line
-                  dense
-                  :error="showTokenIncorrect ? true : false"
-                  v-model="tokenpass"
-                  type="password"
-                  @keypress.enter="checkTokenpass"
-                >
-                </v-text-field>
-                <v-btn
-                  outlined
-                  depressed
-                  dense
-                  style="margin-top: 2px; margin-left: 20px"
-                  @click="checkTokenpass"
-                >
-                  Submit
-                </v-btn>
-              </div>
-            </div>
-          </v-card>
-        </template>
-        <template v-else-if="window.id === 7">
-          <iframe
-            muted
-            class="iframe"
-            src="https://jcw87.github.io/c2-smb1/"
-          ></iframe>
-        </template>
-        <template v-else-if="window.id === 8">
-          <iframe
-            border="0"
-            frameborder="0"
-            marginheight="0"
-            marginwidth="0"
-            width="500px"
-            height="750px"
-            muted
-            scrolling="no"
-            allowtransparency="true"
-            src="https://freehtml5games.org/games/tetris-cube/index.html"
-          ></iframe>
-        </template>
-        <template v-else-if="window.id === 9">
-          <iframe
-            src="https://www.patorjk.com/games/snake/"
-            width="600"
-            height="400"
-            style="border: none"
-          ></iframe>
-        </template>
-
-        <!-- <template v-else-if="window.id === 11">
-          <div class="">
-            <div class="trash-icon" @click="openZeroaddr">
-              <img
-                width="40px"
-                src="https://images.blur.io/_blur-prod/0x5af0d9827e0c53e4799bb226655a1de152a425a5/2575-278b3b16ac9bb634?w=640"
-              />
-              <p>Milady2575</p>
-            </div>
-            <div class="trash-icon" @click="openZeroaddr">
-              <img
-                width="40px"
-                src="https://images.blur.io/_blur-prod/0x32bb5a147b5371fd901aa4a72b7f82c58a87e36d/1100-6fe78a0604d7ce50?w=640"
-              />
-              <p>BitBear1100</p>
-            </div>
-            <div class="trash-icon" @click="openZeroaddr">
-              <img
-                width="40px"
-                src="https://images.blur.io/_blur-prod/0xd3d9ddd0cf0a5f0bfb8f7fceae075df687eaebab/6791-32372e4ab3211cbd?w=640"
-              />
-              <p>Remilio6791</p>
-            </div>
-          </div>
-        </template> -->
-        <!-- 2 Files were deleted. -->
-        <template v-else-if="window.id === 11">
-          <v-card color="transparent" elevation="0">
-            <v-card-text>
-              <pre>  Text files updated. </pre>
-            </v-card-text>
-          </v-card>
-        </template>
-
-        <template v-else-if="window.id === 12">
-          <!-- <iframe src="https://blur.io/asset/0x32bb5a147b5371fd901aa4a72b7f82c58a87e36d/1100"  width="1000" height="600"></iframe> -->
-        </template>
-        <template v-else-if="window.id === 13">
-          <!-- <iframe></iframe> -->
-        </template>
-        <template v-else-if="window.id === 14">
-          <!-- <iframe></iframe> -->
-          <!-- {{ jrpgnum }} -->
-          <!-- <v-text-field single-line v-model="jrpgnum" type="number" outlined dense></v-text-field> -->
-          <div class="sacrifice" v-if="jrpgready">
-            <div>
-              <audio
-                v-if="jrpgnum < 4"
-                src="../assets/Dxrk タークx Ghostface Playa - BUSTAS (Official Audio).mp3"
-                autoplay
-              ></audio>
-              <audio
-                v-if="jrpgnum >= 5"
-                src="../assets/sigma.mp3"
-                autoplay
-              ></audio>
-              <v-img
-                v-if="jrpgnum < 2"
-                src="../assets/jrpg/1.png"
-                class="v-img"
-              ></v-img>
-              <v-img
-                v-if="jrpgnum > 1 && jrpgnum < 4"
-                src="../assets/jrpg/2.png"
-                class="v-img"
-              ></v-img>
-              <v-img
-                v-if="jrpgnum == 5"
-                src="../assets/jrpg/3.png"
-                class="v-img"
-              ></v-img>
-              <v-img
-                v-if="jrpgnum == 6"
-                src="../assets/jrpg/yeet_1.webp"
-                class="v-img"
-              ></v-img>
-              <v-img
-                v-if="jrpgnum == 7"
-                src="../assets/jrpg/yeet_2.webp"
-                class="v-img"
-              ></v-img>
-              <v-img
-                v-if="jrpgnum > 7 && jrpgnum < 10"
-                src="../assets/jrpg/4.png"
-                class="v-img"
-              ></v-img>
-              <v-img
-                v-if="jrpgnum === 10"
-                src="../assets/jrpg/package.webp"
-                class="v-img"
-              ></v-img>
-              <div class="jrpg-box-3" v-if="jrpgnum == 11">
-                <div class="jrpg-text">
-                  <p>{{ jrpg[jrpgnum] }}</p>
-                </div>
-              </div>
-              <v-img
-                v-if="jrpgnum === 11"
-                src="../assets/jrpg/letsyeet.webp"
-                class="v-img"
-              ></v-img>
-              <v-img
-                v-if="jrpgnum === 12"
-                src="../assets/jrpg/fin.webp"
-                class="v-img"
-              ></v-img>
-              <div class="jrpg-box-1" v-if="jrpgnum < 2">
-                <div class="jrpg-text">
-                  <p>{{ jrpg[jrpgnum] }}</p>
-                </div>
-              </div>
-
-              <div class="jrpg-box-2" v-if="jrpgnum > 1 && jrpgnum < 4">
-                <div class="jrpg-text">
-                  <p>{{ jrpg[jrpgnum] }}</p>
-                </div>
-              </div>
-
-              <div class="jrpg-box-3" v-if="jrpgnum > 3 && jrpgnum < 6">
-                <div class="jrpg-text">
-                  <p>{{ jrpg[jrpgnum] }}</p>
-                </div>
-              </div>
-              <div class="jrpg-box-3" v-if="jrpgnum > 7 && jrpgnum < 10">
-                <div class="jrpg-text">
-                  <p>{{ jrpg[jrpgnum] }}</p>
-                </div>
-              </div>
-
-              <button
-                v-if="jrpgnum < 12"
-                class="jrpg-button"
-                @click="continueBtn"
-              >
-                Continue
-              </button>
-            </div>
-          </div>
-          <div v-else>
-            <v-card elevation="0" color="white">
-              <v-card-text style="text-align: center">
-                <img
-                  src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/04de2e31234507.564a1d23645bf.gif"
-                  style="width: 200px; margin: 50px"
-                />
-                <pre style="color: black">Loading necessary files. . .</pre>
-              </v-card-text></v-card
-            >
-
-            <!-- <div id="progress-bar-container">
-                <div id="progress-bar"></div>
-              </div> -->
+          <div>
+            <ThemeSwitcher> </ThemeSwitcher>
           </div>
         </template>
 
-        <template v-else-if="window.id === 15">
-          <v-card
-            v-if="showError || showTxPending"
-            width="500"
-            height="250"
-            class="showError"
-          >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn icon @click="(showError = false), (approvalError = false)">
-                X
-              </v-btn>
-            </v-card-actions>
-            <v-card-text v-if="showError">
-              <p>{{ errorMessage }}</p>
-            </v-card-text>
+        <template v-else-if="window.id === 3"> </template>
 
-            <v-card-text v-if="showTxPending">
-              <p>Transaction pending. . .</p>
-            </v-card-text>
+        <template v-else-if="window.id === 4"> </template>
 
-            <v-btn
-              v-if="approvalError"
-              @click="
-                approveTokens(availableBalance);
-                approvalError = false;
-              "
-              outlined
-              depressed
-            >
-              Yes
-            </v-btn>
-          </v-card>
+        <template v-else-if="window.id === 6"> </template>
 
-          <v-card elevation="0" color="black" width="700" height="600">
-            <div style="text-align: center; padding-top: 40px">
-              <img src="../assets/logo-2.png" width="250px" />
-            </div>
-            <div
-              style="text-align: center; padding-top: 50px"
-              v-if="!walletConnected"
-            >
-              <v-btn outlined depressed @click="connectWallet"
-                >Connect Wallet</v-btn
-              >
-            </div>
+        <template v-else-if="window.id === 5"> </template>
+        <template v-else-if="window.id === 7"> </template>
+        <template v-else-if="window.id === 8"> </template>
+        <template v-else-if="window.id === 9"> </template>
+        <template v-else-if="window.id === 10"> </template>
+        <template v-else-if="window.id === 11"> </template>
 
-            <div v-else>
-              <v-text-field
-                outlined
-                depressed
-                single-line
-                v-model="amount"
-                type="number"
-                label="Amount"
-                style="margin-left: 75px; margin-right: 75px; margin-top: 30px"
-                v-if="allowance > 0"
-              ></v-text-field>
-              <div
-                style="display: flex; justify-content: center; margin-top: 50px"
-                v-if="allowance < 1"
-              >
-                <v-btn
-                  outlined
-                  depressed
-                  @click="approveTokens(availableBalance)"
-                  >Approve Tokens For Staking</v-btn
-                >
-                <!-- <v-btn @click="getAllowance()">
-                    Hello?
-                </v-btn> -->
-              </div>
-              <div v-else>
-                <div style="display: flex; justify-content: center">
-                  <div
-                    style="
-                      display: flex;
-                      flex-direction: row;
-                      margin: 0 auto;
-                      text-align: center;
-                    "
-                  >
-                    <v-btn
-                      outlined
-                      depressed
-                      x-large
-                      style="margin-right: 50px"
-                      @click="stakeTokens(amount)"
-                      >drinkthekoolaid.exe</v-btn
-                    >
-                    <v-btn
-                      outlined
-                      depressed
-                      x-large
-                      @click="unstakeTokens(amount)"
-                      >returntoreality.exe</v-btn
-                    >
-                  </div>
-                </div>
-                <div style="display: flex; justify-content: center">
-                  <div
-                    style="
-                      display: flex;
-                      flex-direction: row;
-                      margin: 0 auto;
-                      text-align: center;
-                      padding: 20px;
-                    "
-                  >
-                    <p style="margin-right: 90px">( stake | 0% burn )</p>
+        <template v-else-if="window.id === 12"> </template>
+        <template v-else-if="window.id === 13"> </template>
+        <template v-else-if="window.id === 14"> </template>
 
-                    <p style="margin-left: 90px">( unstake | 6% burn )</p>
-                  </div>
-                </div>
-                <div style="text-align: center; margin-bottom: 20px">
-                  <pre> Your wallet: {{ connectedAccount }} </pre>
-                  <pre> Allowance: {{ allowance }} </pre>
-                  <pre> Staked: {{ stakedBalance }} </pre>
-                  <pre> Available:  {{ availableBalance }} </pre>
+        <template v-else-if="window.id === 15"> </template>
 
-                  <!-- <p>Approved $YEET for staking: {{ fromSmallestUnit(allowance, getTokenDecimals())  }}</p> -->
-                </div>
-              </div>
-            </div>
-          </v-card>
-        </template>
+        <template v-else-if="window.id === 16"> </template>
 
-        <template v-else-if="window.id === 16">
-          <!-- <iframe></iframe> -->
-
-          <v-card elevation="0" color="black" width="700" height="750">
-            <div style="padding: 20px">
-              <pre>Auction live? {{ AuctionLive }} </pre>
-              <pre>Highest Bid: {{ highestBid }} </pre>
-              <pre>nftAddress:  {{ nftAddress }}</pre>
-              <pre>Previous Auction id:  {{ previousAuctionId }}</pre>
-              <pre>Auction starting time: {{ auctionStartingTime }}</pre>
-              <pre>Auction ending time: {{ auctionEndingTime }}</pre>
-              <pre>Entry price: {{ entryPrice }}</pre>
-            </div>
-            <div style="text-align: center; padding-top: 40px">
-              <!-- <img src="../assets/logo-2.png" width="250px"  style="border: 1px solid white"/> -->
-
-              <v-card
-                v-if="showAuctionError || showTxPending"
-                width="500"
-                height="250"
-                class="showError"
-              >
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    icon
-                    @click="(showAuctionError = false), (approvalError = false)"
-                  >
-                    X
-                  </v-btn>
-                </v-card-actions>
-                <v-card-text v-if="showAuctionError">
-                  <p>{{ auctionerrorMessage }}</p>
-                </v-card-text>
-
-                <v-card-text v-if="showTxPending">
-                  <p>Transaction pending. . .</p>
-                </v-card-text>
-              </v-card>
-            </div>
-            <div
-              style="text-align: center; padding-top: 30px"
-              v-if="!walletConnected"
-            >
-              <v-btn outlined depressed @click="connectWallet"
-                >Connect Wallet</v-btn
-              >
-            </div>
-
-            <div v-else>
-              <div v-if="!AuctionLive">
-                <v-card
-                  width="250"
-                  height="250"
-                  style="border: 1px solid white; margin: 0 auto"
-                >
-                  <!-- <img
-                    src="https://images.blur.io/_blur-prod/0xd3d9ddd0cf0a5f0bfb8f7fceae075df687eaebab/6791-32372e4ab3211cbd?w=640"
-                    width="248px"
-                  /> -->
-                </v-card>
-
-                <div style="text-align: center">
-                  <h3 style="margin: 20px">
-                    Current Top Bid: {{ highestBid }} $YEET
-                  </h3>
-                  <p>
-                    Note: Your first bid automatically pays for the entry price,
-                    and will be reduced by that. Currently:
-                    {{ entryPrice }} $YEET
-                  </p>
-                </div>
-                <div
-                  style="
-                    display: flex;
-                    flex-direction: row;
-                    padding-left: 40px;
-                    padding-right: 40px;
-                    padding-top: 30px;
-                  "
-                >
-                  <v-text-field
-                    outlined
-                    depressed
-                    single-line
-                    label="Amount"
-                    v-model="yeetBid"
-                    type="number"
-                  ></v-text-field>
-                  <v-btn
-                    outlined
-                    depressed
-                    x-large
-                    style="margin-top: 2px; margin-left: 15px"
-                    @click="placeBid(0, yeetBid)"
-                  >
-                    Bid
-                  </v-btn>
-                </div>
-                <div class="bidButtons">
-                  <!-- 100k, 1M, 5M, 10M -->
-                  <v-btn
-                    class="bidBtn"
-                    outlined
-                    depressed
-                    @click="yeetBidfn(10000)"
-                  >
-                    + 10k
-                  </v-btn>
-                  <v-btn
-                    class="bidBtn"
-                    outlined
-                    depressed
-                    @click="yeetBidfn(100000)"
-                  >
-                    + 100k
-                  </v-btn>
-                  <v-btn
-                    class="bidBtn"
-                    outlined
-                    depressed
-                    @click="yeetBidfn(1000000)"
-                  >
-                    + 1m
-                  </v-btn>
-                  <v-btn
-                    class="bidBtn"
-                    outlined
-                    depressed
-                    @click="yeetBidfn(5000000)"
-                  >
-                    + 5M
-                  </v-btn>
-                  <v-btn
-                    class="bidBtn"
-                    outlined
-                    depressed
-                    @click="yeetBidfn(10000000)"
-                  >
-                    + 10m
-                  </v-btn>
-                </div>
-              </div>
-
-              <v-card-text v-else style="text-align: center; margin-top: 100px">
-                <p>Currently no active auctions</p>
-
-                <p>Previous Auctions: {{ previousAuctionId }}</p>
-              </v-card-text>
-            </div>
-          </v-card>
-        </template>
-
-        <template v-else-if="window.id === 1337">
-          <CollectingGame></CollectingGame>
-        </template>
+        <template v-else-if="window.id === 1337"> </template>
       </Window>
       <Taskbar
         ref="taskbar"
@@ -830,41 +78,11 @@
 
     <div v-else-if="!isDesktop" class="mobile-message">
       <div class="console">
-        <p>
-          YEET your portable device and come back on your desktop for a banger
-          experience on YEET OS
-        </p>
-        <br />
-        <p>For more info about YEET DAO,</p>
-        <p>
-          visit:
-          <a href="https://yeet-dao.gitbook.io/project-files/" style="">
-            https://yeet-dao.gitbook.io/project-files/
-          </a>
-        </p>
-        <div class="button-container">
-          <a href="https://twitter.com/yeet_dao">
-            <button class="button">
-              <img src="../assets/twitter.png" />
-            </button>
-          </a>
-          <a href="https://t.me/yeet_dao">
-            <button class="button">
-              <img src="../assets/telegram.png" />
-            </button>
-          </a>
-          <a
-            href="https://dexscreener.com/ethereum/0x599cda43cc0e26030c714617d6a6b300fee16586"
-          >
-            <button class="button">
-              <img src="../assets/dextools.png" />
-            </button>
-          </a>
-        </div>
+        <p>This site does not work with portable devices</p>
       </div>
     </div>
 
-    <div v-else-if="isDesktop && showIntro">
+    <!-- <div v-else-if="isDesktop && showIntro">
       <div class="bootup-screen" v-if="!playvideo" @click="playvideo = true">
         <h1>Welcome to YEET OS</h1>
         <p>Press any key to continue...</p>
@@ -879,7 +97,7 @@
 
     <div class="shutdown-screen" v-else>
       <img src="@/assets/windows98bluescreen.jpg" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -890,7 +108,7 @@ import watch from "vue";
 import Window from "./Window.vue";
 import Taskbar from "./Taskbar.vue";
 import Clock from "./Clock.vue";
-import IntroVideo from "./IntroVideo.vue";
+// import IntroVideo from "./IntroVideo.vue";
 
 import staking from "../hardhatabi/sepiola_staking.json";
 import yeet from "../hardhatabi/sepiola_mock.json";
@@ -902,7 +120,8 @@ import web3 from "web3";
 
 import CryptoJS from "crypto-js";
 import { ethers } from "ethers";
-import CollectingGame from "./CollectingGame.vue";
+import ThemeSwitcher from "./ThemeSwitcher.vue";
+// import CollectingGame from "./CollectingGame.vue";
 
 export default {
   data() {
@@ -990,8 +209,9 @@ export default {
     Window,
     Taskbar,
     Clock,
-    IntroVideo,
-    CollectingGame,
+    ThemeSwitcher
+    // IntroVideo,
+    // CollectingGame,
   },
   computed: {
     ...mapState(["windows"]),
@@ -1397,12 +617,12 @@ export default {
       this.showIntro = false;
       this.playvideo = false;
     },
-    playIntroVideo() {
-      this.playvideo = true;
-    },
-    hideBootupScreen() {
-      this.playIntroVideo();
-    },
+    // playIntroVideo() {
+    //   this.playvideo = true;
+    // },
+    // hideBootupScreen() {
+    //   this.playIntroVideo();
+    // },
     checkDevice() {
       const width =
         window.innerWidth ||
@@ -1493,10 +713,10 @@ export default {
       }
     },
     handleKeyDown(event) {
-      this.hideBootupScreen();
-      if (event.keyCode === 27) {
-        this.closed = false;
-      }
+      // this.hideBootupScreen();
+      // if (event.keyCode === 27) {
+      //   this.closed = false;
+      // }
     },
     playSong(target) {
       for (const item of this.playlistItems) {

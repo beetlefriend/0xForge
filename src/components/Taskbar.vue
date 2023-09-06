@@ -190,8 +190,11 @@ export default {
   left: 0;
   right: 0;
   height: 40px;
-  background-color: #3f4455;
+  background-color: #2b2e3a;
+  opacity: .85;
   box-shadow: 0 0 5px rgba(167, 167, 167, 0.2);
+
+  border:  1px solid #31343d;;
 }
 
 .taskbar.closed {
