@@ -195,26 +195,25 @@ export default defineComponent({
 <style scoped>
 .window {
   position: absolute;
-  background-color: #3f4455;
-  border: 1px solid #000;
+  background-color: var(--component-bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
   min-width: 200px;
   min-height: 100px;
-  /* cursor: move; */
-  /* user-select: none; */
   font-family: "Tahoma", sans-serif;
 }
 .window.focused {
-  border-color: rgb(146, 146, 146);
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+  border-color: var(--focused-border-color, rgb(146, 146, 146));
+  box-shadow: var(--box-shadow, 0px 0px 10px rgba(0, 0, 0, 0.9));
 }
 
 .window-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #282b36;
+  background-color: var(--title-bg-color, #282b36);
   padding: 4px;
-  color: #fff;
+  color: var(--text-color, #fff);
   font-weight: bold;
   font-size: 12px;
   cursor: move;
@@ -225,8 +224,8 @@ export default defineComponent({
 }
 
 .window-buttons button {
-  background-color: #3f4455;
-  border: 1px solid #000;
+  background-color: var(--button-bg-color, #3f4455);
+  border: 1px solid var(--border-color, #000);
   margin-left: 2px;
   width: 20px;
   height: 20px;
@@ -238,7 +237,7 @@ export default defineComponent({
 
 .window-content {
   padding: 8px;
-  background-color: #3f4455;
+  background-color: var(--content-bg-color, #3f4455);
   font-size: 12px;
 }
 </style>

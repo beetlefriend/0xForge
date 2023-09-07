@@ -190,11 +190,10 @@ export default {
   left: 0;
   right: 0;
   height: 40px;
-  background-color: #2b2e3a;
-  opacity: .85;
-  box-shadow: 0 0 5px rgba(167, 167, 167, 0.2);
-
-  border:  1px solid #31343d;;
+  background-color: var(--bg-color, #3f4455);
+  opacity: 1;
+  box-shadow: var(--box-shadow, 0 0 5px rgba(167, 167, 167, 0.2));
+  border: 1px solid var(--border-color, #282b36);
 }
 
 .taskbar.closed {
@@ -204,12 +203,13 @@ export default {
 .taskbar-logo {
   padding: 0 10px;
   margin-right: 10px;
-  border: 1px solid #282b36;
-  box-shadow: inset 0.05em 0.05em 0.05em 0 rgba(255, 255, 255, 0.5),
-    inset -0.05em -0.05em 0.05em 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color, #282b36);
+  box-shadow: var(--box-shadow-inset, inset 0.05em 0.05em 0.05em 0 rgba(255, 255, 255, 0.5), inset -0.05em -0.05em 0.05em 0 rgba(0, 0, 0, 0.5));
+  background-color: var(--component-bg-color, #292c37);
 }
+
 .taskbar-logo:hover {
-  background-color: #292c37;
+  background-color: var(--component-bg-color-hover, #292c37);
 }
 
 .taskbar-new-window {
@@ -222,9 +222,9 @@ export default {
 }
 
 .taskbar-item {
-  background-color: #373b4a;
-  border: 1px solid #282b36;
-  color: #ffffff;
+  background-color: var(--component-bg-color, #373b4a);
+  border: 1px solid var(--border-color, #282b36);
+  color: var(--text-color, #ffffff);
   padding: 0 15px;
   height: 100%;
   margin: 5px;
@@ -237,11 +237,12 @@ export default {
 }
 
 .taskbar-item.active {
-  background-color: #e8e7ec;
+  background-color: var(--active-item-bg-color, #e8e7ec);
 }
 
 .taskbar-clock {
   padding: 0 10px;
+  color: var(--text-color, white);
 }
 
 .taskbar-items {
@@ -254,17 +255,6 @@ export default {
   display: none;
 }
 
-/* .start-menu {
-  position: absolute;
-  bottom: calc(100% + 5px);
-  right: 0;
-  background-color: #c2c2c2;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  width: 200px;
-  height: 300px;
-  z-index: 1000; 
-} */
-
 .webamp {
   position: absolute;
   top: 50%;
@@ -272,3 +262,4 @@ export default {
   transform: translate(-50%, -50%);
 }
 </style>
+

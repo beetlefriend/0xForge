@@ -1,7 +1,6 @@
 <template>
   <v-app class="grey lighten-4">
     <winXP></winXP>
-
   </v-app>
 </template>
 
@@ -16,9 +15,7 @@ import WinXP from "./components/WinXP.vue";
 export default Vue.extend({
   name: "App",
   components: {
-
     WinXP,
-
   },
 });
 </script>
@@ -40,9 +37,30 @@ export default Vue.extend({
   font-family: myFirstFont;
 }
 
+.v-card {
+  background-color: var(--component-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* For v-card-text */
+.v-card-text {
+  color: var(--text-color) !important;
+}
+
+:root {
+  --text-color: #ffffff; /* Default text color */
+}
+
+body, body * {
+  color: var(--text-color) !important;
+}
+
 body {
   font-family: "Tahoma", sans-serif !important;
 }
+
+
 
 /* a {
   text-decoration: none !important;

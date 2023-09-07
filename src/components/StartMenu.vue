@@ -151,8 +151,9 @@ export default {
   position: fixed;
   bottom: 40px;
   left: 0px;
-  background-color: #2b2e3a;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
+  background-color: var(--component-bg-color, #292c37);
+  border: 1px solid var(--border-color, #282b36);
+  box-shadow: var(--box-shadow, 0 0 5px rgba(167, 167, 167, 0.2));
   width: 200px;
   height: 300px;
   z-index: 9999;
