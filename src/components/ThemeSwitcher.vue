@@ -55,6 +55,22 @@ export default {
           "--focused-border-color",
           "#b0b0b0"
         );
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#e0e0e0"
+        );
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#e0e0e0"
+        ); // Light theme hover color// Light theme hover color
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#ffffff"
+        ); // Light theme background color
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#e0e0e0"
+        );
       } else if (this.selectedTheme === "solarizedDark") {
         document.documentElement.style.setProperty("--bg-color", "#002b36");
         document.documentElement.style.setProperty("--text-color", "#ffffff"); // Changed to a lighter color for better readability
@@ -129,6 +145,31 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.theme-switcher label {
+  font-weight: bold;
+}
+
+.theme-switcher select,
+.theme-switcher input {
+  padding: 5px;
+  border: 1px solid var(--border-color, #282b36); /* Default border color */
+  background-color: var(
+    --component-bg-color,
+    #292c37
+  ); /* Default background color */
+  color: var(--text-color, #ffffff); /* Default text color */
+}
+
+.theme-switcher select:hover,
+.theme-switcher input:hover {
+  border-color: var(
+    --focused-border-color,
+    #146,
+    146,
+    146
+  ); /* Default focused border color */
 }
 
 /* Define default CSS variables for existing theme (you will need to define the existing theme colors here) */

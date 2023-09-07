@@ -178,7 +178,8 @@ export default {
 }
 
 .start-menu ul li:hover {
-  background-color: #827d7d;
+   background-color: var(--menu-item-hover-bg-color,#464c63); /* Default hover color */
+
 }
 
 .start-menu-item {
@@ -189,12 +190,17 @@ export default {
   display: block;
 }
 
+.start-menu-item:hover {
+  background-color: var(--menu-item-hover-bg-color,#464c63); /* Default hover color */
+}
+
+
 .start-menu-sub {
   display: none;
   position: absolute;
   top: -5px;
   left: 100%;
-  background-color: #3f4455;
+  background-color: var(--submenu-bg-color, #3f4455); /* Default background color */
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
   width: 200px;
   height: auto;

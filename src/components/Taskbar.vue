@@ -209,8 +209,9 @@ export default {
 }
 
 .taskbar-logo:hover {
-  background-color: var(--component-bg-color-hover, #292c37);
+  background-color: var(--button-hover-bg-color, #292c37); /* Default hover color */
 }
+
 
 .taskbar-new-window {
   padding: 0 5px;
