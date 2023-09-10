@@ -204,14 +204,17 @@ export default {
   padding: 0 10px;
   margin-right: 10px;
   border: 1px solid var(--border-color, #282b36);
-  box-shadow: var(--box-shadow-inset, inset 0.05em 0.05em 0.05em 0 rgba(255, 255, 255, 0.5), inset -0.05em -0.05em 0.05em 0 rgba(0, 0, 0, 0.5));
+  box-shadow: var(
+    --box-shadow-inset,
+    inset 0.05em 0.05em 0.05em 0 rgba(255, 255, 255, 0.5),
+    inset -0.05em -0.05em 0.05em 0 rgba(0, 0, 0, 0.5)
+  );
   background-color: var(--component-bg-color, #292c37);
 }
 
 .taskbar-logo:hover {
-  background-color: var(--button-hover-bg-color, #292c37); /* Default hover color */
+  background-color: var(--taskbar-logo-hover-bg-color, 4f5565);
 }
-
 
 .taskbar-new-window {
   padding: 0 5px;
@@ -263,4 +266,3 @@ export default {
   transform: translate(-50%, -50%);
 }
 </style>
-

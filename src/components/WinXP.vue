@@ -27,14 +27,33 @@
         </template>
 
         <template v-else-if="window.id === 2">
-          <div>
+          <div style="width: 400px">
             <ThemeSwitcher> </ThemeSwitcher>
           </div>
         </template>
 
-        <template v-else-if="window.id === 3"> </template>
+        <template v-else-if="window.id === 3">
+          <v-card width="400px">
+            <v-card-text
+              >In the world of blockchain, where innovation takes flight,
+              0xForge emerges, a beacon of light. An all-in-one toolkit, with a
+              desktop UI so sleek, It simplifies ERC20 tokens, making the
+              process unique. With lines of code and smart contracts galore,
+              0xForge stands tall, ready to explore. Creating tokens on
+              Ethereum's chain, With ease and precision, it's not a strain. No
+              need for politics, it's all about the tech, Empowering developers,
+              what a great spec! From tokens to tokens, it guides the way,
+              0xForge, our ally, here to stay. So code away, dear programmer,
+              with glee, For 0xForge is here, your trusted key. To unlock the
+              world of blockchain's might, In the realm of crypto, it shines so
+              bright.</v-card-text
+            >
+          </v-card>
+        </template>
 
-        <template v-else-if="window.id === 4"> </template>
+        <template v-else-if="window.id === 4">
+          <TokenDeployer></TokenDeployer>
+        </template>
 
         <template v-else-if="window.id === 6"> </template>
 
@@ -108,6 +127,7 @@ import watch from "vue";
 import Window from "./Window.vue";
 import Taskbar from "./Taskbar.vue";
 import Clock from "./Clock.vue";
+
 // import IntroVideo from "./IntroVideo.vue";
 
 import staking from "../hardhatabi/sepiola_staking.json";
@@ -121,6 +141,7 @@ import web3 from "web3";
 import CryptoJS from "crypto-js";
 import { ethers } from "ethers";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
+import TokenDeployer from "./TokenDeployer.vue";
 // import CollectingGame from "./CollectingGame.vue";
 
 export default {
@@ -185,10 +206,15 @@ export default {
       auctionStartingTime: null,
       auctionEndingTime: null,
       entryPrice: null,
+      selectedTheme: localStorage.getItem("selectedTheme") || "existing",
+      bgImageUrl: localStorage.getItem("bgImageUrl") || "",
     };
   },
 
-  created() {},
+  created() {
+    this.changeTheme(this.selectedTheme);
+    this.changeBackgroundImage(this.bgImageUrl);
+  },
   mounted() {
     // Create an array of image sources
     document.addEventListener("keydown", this.handleKeyDown);
@@ -209,7 +235,8 @@ export default {
     Window,
     Taskbar,
     Clock,
-    ThemeSwitcher
+    ThemeSwitcher,
+    TokenDeployer,
     // IntroVideo,
     // CollectingGame,
   },
@@ -217,6 +244,183 @@ export default {
     ...mapState(["windows"]),
   },
   methods: {
+    changeTheme(theme) {
+      if (theme === "light") {
+        document.documentElement.style.setProperty("--bg-color", "#f0f0f0");
+        document.documentElement.style.setProperty("--text-color", "#000");
+        document.documentElement.style.setProperty(
+          "--component-bg-color",
+          "#ffffff"
+        );
+        document.documentElement.style.setProperty("--border-color", "#ccc");
+        document.documentElement.style.setProperty(
+          "--box-shadow",
+          "0 0 5px rgba(0, 0, 0, 0.1)"
+        );
+        document.documentElement.style.setProperty(
+          "--title-bg-color",
+          "#e0e0e0"
+        );
+        document.documentElement.style.setProperty(
+          "--button-bg-color",
+          "#f0f0f0"
+        );
+        document.documentElement.style.setProperty(
+          "--content-bg-color",
+          "#ffffff"
+        );
+        document.documentElement.style.setProperty(
+          "--focused-border-color",
+          "#b0b0b0"
+        );
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#d0d0d0"
+        );
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#e0e0e0"
+        );
+        document.documentElement.style.setProperty(
+          "--taskbar-logo-hover-bg-color",
+          "#e0e0e0"
+        );
+      } else if (theme === "solarizedDark") {
+        document.documentElement.style.setProperty("--bg-color", "#002b36");
+        document.documentElement.style.setProperty("--text-color", "#f2ffb3");
+        document.documentElement.style.setProperty(
+          "--component-bg-color",
+          "#073642"
+        );
+        document.documentElement.style.setProperty("--border-color", "#586e75");
+        document.documentElement.style.setProperty(
+          "--box-shadow",
+          "0 0 5px rgba(0, 43, 54, 0.5)"
+        );
+        document.documentElement.style.setProperty(
+          "--title-bg-color",
+          "#586e75"
+        );
+        document.documentElement.style.setProperty(
+          "--button-bg-color",
+          "#052229"
+        );
+        document.documentElement.style.setProperty(
+          "--content-bg-color",
+          "#002b36"
+        );
+        document.documentElement.style.setProperty(
+          "--focused-border-color",
+          "#268bd2"
+        );
+        document.documentElement.style.setProperty(
+          "--taskbar-bg-color",
+          "#073642"
+        );
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#586e75"
+        );
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#002b36"
+        );
+        document.documentElement.style.setProperty(
+          "--start-button-hover-bg-color",
+          "#586e75"
+        );
+        document.documentElement.style.setProperty(
+          "--taskbar-logo-hover-bg-color",
+          "#586e75"
+        );
+      } else if (this.selectedTheme === "oceanBlue") {
+        document.documentElement.style.setProperty("--bg-color", "#1b262c");
+        document.documentElement.style.setProperty("--text-color", "#bbe1fa");
+        document.documentElement.style.setProperty(
+          "--component-bg-color",
+          "#1b262c"
+        );
+        document.documentElement.style.setProperty("--border-color", "#0f4c75");
+        document.documentElement.style.setProperty(
+          "--box-shadow",
+          "0 0 5px rgba(0, 78, 117, 0.5)"
+        );
+        document.documentElement.style.setProperty(
+          "--title-bg-color",
+          "#0f4c75"
+        );
+        document.documentElement.style.setProperty(
+          "--button-bg-color",
+          "#3282b8"
+        );
+        document.documentElement.style.setProperty(
+          "--content-bg-color",
+          "#1b262c"
+        );
+        document.documentElement.style.setProperty(
+          "--focused-border-color",
+          "#bbe1fa"
+        );
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#0f4c75"
+        );
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#1b262c"
+        );
+        document.documentElement.style.setProperty(
+          "--taskbar-logo-hover-bg-color",
+          "#0f4c75"
+        );
+      } else {
+        document.documentElement.style.setProperty("--bg-color", "#3f4455");
+        document.documentElement.style.setProperty("--text-color", "#ffffff");
+        document.documentElement.style.setProperty(
+          "--component-bg-color",
+          "#292c37"
+        );
+        document.documentElement.style.setProperty("--border-color", "#282b36");
+        document.documentElement.style.setProperty(
+          "--box-shadow",
+          "0 0 5px rgba(167, 167, 167, 0.2)"
+        );
+        document.documentElement.style.setProperty(
+          "--title-bg-color",
+          "#282b36"
+        );
+        document.documentElement.style.setProperty(
+          "--button-bg-color",
+          "#3f4455"
+        );
+        document.documentElement.style.setProperty(
+          "--content-bg-color",
+          "#3f4455"
+        );
+        document.documentElement.style.setProperty(
+          "--focused-border-color",
+          "rgb(146, 146, 146)"
+        );
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#3f4455"
+        );
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#292c37"
+        );
+        document.documentElement.style.setProperty(
+          "--taskbar-logo-hover-bg-color",
+          "#4f5565"
+        );
+      }
+      localStorage.setItem("selectedTheme", theme);
+    },
+    changeBackgroundImage(url) {
+      document.documentElement.style.setProperty("--bg-image", `url(${url})`);
+      localStorage.setItem("bgImageUrl", url);
+    },
+
     async connectWallet() {
       console.log("Connecting to wallet...");
       // this.loading = true;
@@ -971,8 +1175,8 @@ export default {
 
 #app {
   animation: fadeIn 1.5s ease-in-out;
-  background-image: url("@/assets/bg.png") !important;
-  background-size: cover !important;
+  background-image: var(--bg-image, url("@/assets/bg.png"));
+  background-size: cover;
 }
 
 /* Disable animation for Firefox */

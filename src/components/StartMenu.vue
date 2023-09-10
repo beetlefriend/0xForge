@@ -27,6 +27,20 @@
               />
               Winamp
             </li>
+            <li class="start-menu-sub-item" @click="openTokencreator">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/2165/2165640.png"
+                class="start-menu-icon"
+              />
+              Tokencreator
+            </li>
+            <li class="start-menu-sub-item" @click="openThemes">
+              <img
+                src="https://png.pngtree.com/png-vector/20221010/ourmid/pngtree-theme-icon-vector-png-image_6293125.png"
+                class="start-menu-icon"
+              />
+              Theme
+            </li>
           </ul>
         </div>
       </li>
@@ -125,13 +139,24 @@ export default {
     //     id: 3,
     //   });
     // },
+    openThemes() {
+      // code to open About.txt here
+      this.$store.dispatch("openWindow", {
+        id: 2,
+      });
+    },
     openYepText() {
       // code to open About.txt here
       this.$store.dispatch("openWindow", {
         id: 3,
       });
     },
-
+    openTokencreator() {
+      // code to open About.txt here
+      this.$store.dispatch("openWindow", {
+        id: 4,
+      });
+    },
     // openRoadmap() {
     //   // code to open Roadmap.txt here
     //   this.$store.dispatch("openWindow", {
@@ -178,8 +203,10 @@ export default {
 }
 
 .start-menu ul li:hover {
-   background-color: var(--menu-item-hover-bg-color,#464c63); /* Default hover color */
-
+  background-color: var(
+    --menu-item-hover-bg-color,
+    #464c63
+  ); /* Default hover color */
 }
 
 .start-menu-item {
@@ -191,16 +218,21 @@ export default {
 }
 
 .start-menu-item:hover {
-  background-color: var(--menu-item-hover-bg-color,#464c63); /* Default hover color */
+  background-color: var(
+    --menu-item-hover-bg-color,
+    #464c63
+  ); /* Default hover color */
 }
-
 
 .start-menu-sub {
   display: none;
   position: absolute;
   top: -5px;
   left: 100%;
-  background-color: var(--submenu-bg-color, #3f4455); /* Default background color */
+  background-color: var(
+    --submenu-bg-color,
+    #3f4455
+  ); /* Default background color */
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
   width: 200px;
   height: auto;
