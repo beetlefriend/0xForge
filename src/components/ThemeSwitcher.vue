@@ -24,8 +24,8 @@
 export default {
   data() {
     return {
-      selectedTheme: localStorage.getItem('selectedTheme') || "existing",
-      bgImageUrl: localStorage.getItem('bgImageUrl') || "",
+      selectedTheme: localStorage.getItem("selectedTheme") || "existing",
+      bgImageUrl: localStorage.getItem("bgImageUrl") || "",
     };
   },
   mounted() {
@@ -81,6 +81,10 @@ export default {
       resetVariables();
 
       if (this.selectedTheme === "light") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#d3d3d3"
+        ); // Light gray for light theme
         document.documentElement.style.setProperty("--bg-color", "#f0f0f0");
         document.documentElement.style.setProperty("--text-color", "#000");
         document.documentElement.style.setProperty(
@@ -122,6 +126,10 @@ export default {
         );
         setInputFieldStyles("#ccc", "#ffffff", "#000");
       } else if (this.selectedTheme === "solarizedDark") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#586e75"
+        ); // A shade darker for solarized dark
         document.documentElement.style.setProperty("--bg-color", "#002b36");
         document.documentElement.style.setProperty("--text-color", "#f2ffb3");
         document.documentElement.style.setProperty(
@@ -171,6 +179,10 @@ export default {
         );
         setInputFieldStyles("#586e75", "#073642", "#f2ffb3");
       } else if (this.selectedTheme === "oceanBlue") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#005f73"
+        ); // A shade darker for ocean blue
         document.documentElement.style.setProperty("--bg-color", "#1b262c");
         document.documentElement.style.setProperty("--text-color", "#bbe1fa");
         document.documentElement.style.setProperty(
@@ -212,6 +224,10 @@ export default {
         );
         setInputFieldStyles("#0f4c75", "#1b262c", "#bbe1fa");
       } else if (this.selectedTheme === "warm") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#fca45d"
+        ); // A shade darker for warm theme
         document.documentElement.style.setProperty("--bg-color", "#ffeadb");
         document.documentElement.style.setProperty("--text-color", "#5a4238");
         document.documentElement.style.setProperty(
@@ -264,6 +280,10 @@ export default {
           "#fca45d"
         );
       } else {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#4f5565"
+        ); // A shade darker for the default theme
         document.documentElement.style.setProperty("--bg-color", "#3f4455");
         document.documentElement.style.setProperty("--text-color", "#ffffff");
         document.documentElement.style.setProperty(

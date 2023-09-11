@@ -52,15 +52,18 @@ export default Vue.extend({
   --text-color: #ffffff; /* Default text color */
 }
 
-body, body * {
+button:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+body,
+body * {
   color: var(--text-color) !important;
 }
 
 body {
   font-family: "Tahoma", sans-serif !important;
 }
-
-
 
 /* a {
   text-decoration: none !important;

@@ -245,7 +245,25 @@ export default {
   },
   methods: {
     changeTheme(theme) {
+      const setInputFieldStyles = (borderColor, backgroundColor, textColor) => {
+        document.documentElement.style.setProperty(
+          "--input-border-color",
+          borderColor
+        );
+        document.documentElement.style.setProperty(
+          "--input-bg-color",
+          backgroundColor
+        );
+        document.documentElement.style.setProperty(
+          "--input-text-color",
+          textColor
+        );
+      };
       if (this.selectedTheme === "light") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#d3d3d3"
+        ); // Light gray for light theme
         document.documentElement.style.setProperty("--bg-color", "#f0f0f0");
         document.documentElement.style.setProperty("--text-color", "#000");
         document.documentElement.style.setProperty(
@@ -285,7 +303,12 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#e0e0e0"
         );
+        setInputFieldStyles("#ccc", "#ffffff", "#000");
       } else if (this.selectedTheme === "solarizedDark") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#586e75"
+        ); // A shade darker for solarized dark
         document.documentElement.style.setProperty("--bg-color", "#002b36");
         document.documentElement.style.setProperty("--text-color", "#f2ffb3");
         document.documentElement.style.setProperty(
@@ -333,7 +356,12 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#586e75"
         );
+        setInputFieldStyles("#586e75", "#073642", "#f2ffb3");
       } else if (this.selectedTheme === "oceanBlue") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#005f73"
+        ); // A shade darker for ocean blue
         document.documentElement.style.setProperty("--bg-color", "#1b262c");
         document.documentElement.style.setProperty("--text-color", "#bbe1fa");
         document.documentElement.style.setProperty(
@@ -373,7 +401,12 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#0f4c75"
         );
+        setInputFieldStyles("#0f4c75", "#1b262c", "#bbe1fa");
       } else if (this.selectedTheme === "warm") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#fca45d"
+        ); // A shade darker for warm theme
         document.documentElement.style.setProperty("--bg-color", "#ffeadb");
         document.documentElement.style.setProperty("--text-color", "#5a4238");
         document.documentElement.style.setProperty(
@@ -432,7 +465,7 @@ export default {
           "--component-bg-color",
           "#292c37"
         );
-        document.documentElement.style.setProperty("--border-color", "#282b36");
+        document.documentElement.style.setProperty("--border-color", "#4f5565"); // Adjusted color
         document.documentElement.style.setProperty(
           "--box-shadow",
           "0 0 5px rgba(167, 167, 167, 0.2)"
@@ -465,8 +498,9 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#4f5565"
         );
+        setInputFieldStyles("#4f5565", "#292c37", "#ffffff"); // Adjusted color
       }
-      localStorage.setItem("selectedTheme", theme);
+      localStorage.setItem("selectedTheme", this.selectedTheme);
     },
     changeBackgroundImage(url) {
       document.documentElement.style.setProperty("--bg-image", `url(${url})`);
