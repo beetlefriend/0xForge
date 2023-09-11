@@ -245,7 +245,7 @@ export default {
   },
   methods: {
     changeTheme(theme) {
-      if (theme === "light") {
+      if (this.selectedTheme === "light") {
         document.documentElement.style.setProperty("--bg-color", "#f0f0f0");
         document.documentElement.style.setProperty("--text-color", "#000");
         document.documentElement.style.setProperty(
@@ -285,7 +285,7 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#e0e0e0"
         );
-      } else if (theme === "solarizedDark") {
+      } else if (this.selectedTheme === "solarizedDark") {
         document.documentElement.style.setProperty("--bg-color", "#002b36");
         document.documentElement.style.setProperty("--text-color", "#f2ffb3");
         document.documentElement.style.setProperty(
@@ -372,6 +372,58 @@ export default {
         document.documentElement.style.setProperty(
           "--taskbar-logo-hover-bg-color",
           "#0f4c75"
+        );
+      } else if (this.selectedTheme === "warm") {
+        document.documentElement.style.setProperty("--bg-color", "#ffeadb");
+        document.documentElement.style.setProperty("--text-color", "#5a4238");
+        document.documentElement.style.setProperty(
+          "--component-bg-color",
+          "#fddbb1"
+        );
+        document.documentElement.style.setProperty("--border-color", "#fcb07e");
+        document.documentElement.style.setProperty(
+          "--box-shadow",
+          "0 0 5px rgba(250, 148, 90, 0.5)"
+        );
+        document.documentElement.style.setProperty(
+          "--title-bg-color",
+          "#fcb07e"
+        );
+        document.documentElement.style.setProperty(
+          "--button-bg-color",
+          "#fcb07e"
+        );
+        document.documentElement.style.setProperty(
+          "--content-bg-color",
+          "#ffeadb"
+        );
+        document.documentElement.style.setProperty(
+          "--focused-border-color",
+          "#fca45d"
+        );
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#fca45d"
+        );
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#fddbb1"
+        );
+        document.documentElement.style.setProperty(
+          "--taskbar-logo-hover-bg-color",
+          "#fca45d"
+        );
+        document.documentElement.style.setProperty(
+          "--input-bg-color",
+          "#fddbb1"
+        );
+        document.documentElement.style.setProperty(
+          "--input-text-color",
+          "#5a4238"
+        );
+        document.documentElement.style.setProperty(
+          "--input-border-color",
+          "#fca45d"
         );
       } else {
         document.documentElement.style.setProperty("--bg-color", "#3f4455");

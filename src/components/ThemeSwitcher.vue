@@ -11,6 +11,7 @@
       <option value="light">Light Mode</option>
       <option value="solarizedDark">Solarized Dark</option>
       <option value="oceanBlue">Ocean Blue</option>
+      <option value="warm">Warm</option>
     </select>
 
     <label for="bg-image">Background Image URL: </label>
@@ -23,9 +24,15 @@
 export default {
   data() {
     return {
-      selectedTheme: "existing",
-      bgImageUrl: "",
+      selectedTheme: localStorage.getItem('selectedTheme') || "existing",
+      bgImageUrl: localStorage.getItem('bgImageUrl') || "",
     };
+  },
+  mounted() {
+    this.changeTheme();
+    if (this.bgImageUrl) {
+      this.changeBackgroundImage();
+    }
   },
   methods: {
     changeTheme() {
@@ -52,7 +59,22 @@ export default {
           "--taskbar-logo-hover-bg-color",
           ""
         );
-        document.documentElement.style.setProperty("--input-bg-color", ""); // Reset input background color
+      };
+
+      // Define a function to set input field styles
+      const setInputFieldStyles = (borderColor, backgroundColor, textColor) => {
+        document.documentElement.style.setProperty(
+          "--input-border-color",
+          borderColor
+        );
+        document.documentElement.style.setProperty(
+          "--input-bg-color",
+          backgroundColor
+        );
+        document.documentElement.style.setProperty(
+          "--input-text-color",
+          textColor
+        );
       };
 
       // Call the reset function before setting the new variables
@@ -98,10 +120,7 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#e0e0e0"
         );
-        document.documentElement.style.setProperty(
-          "--input-bg-color",
-          "#ffffff"
-        ); // Light background color for inputs and select
+        setInputFieldStyles("#ccc", "#ffffff", "#000");
       } else if (this.selectedTheme === "solarizedDark") {
         document.documentElement.style.setProperty("--bg-color", "#002b36");
         document.documentElement.style.setProperty("--text-color", "#f2ffb3");
@@ -150,10 +169,7 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#586e75"
         );
-        document.documentElement.style.setProperty(
-          "--input-bg-color",
-          "#073642"
-        ); // Dark background color for inputs and select
+        setInputFieldStyles("#586e75", "#073642", "#f2ffb3");
       } else if (this.selectedTheme === "oceanBlue") {
         document.documentElement.style.setProperty("--bg-color", "#1b262c");
         document.documentElement.style.setProperty("--text-color", "#bbe1fa");
@@ -194,10 +210,59 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#0f4c75"
         );
+        setInputFieldStyles("#0f4c75", "#1b262c", "#bbe1fa");
+      } else if (this.selectedTheme === "warm") {
+        document.documentElement.style.setProperty("--bg-color", "#ffeadb");
+        document.documentElement.style.setProperty("--text-color", "#5a4238");
+        document.documentElement.style.setProperty(
+          "--component-bg-color",
+          "#fddbb1"
+        );
+        document.documentElement.style.setProperty("--border-color", "#fcb07e");
+        document.documentElement.style.setProperty(
+          "--box-shadow",
+          "0 0 5px rgba(250, 148, 90, 0.5)"
+        );
+        document.documentElement.style.setProperty(
+          "--title-bg-color",
+          "#fcb07e"
+        );
+        document.documentElement.style.setProperty(
+          "--button-bg-color",
+          "#fcb07e"
+        );
+        document.documentElement.style.setProperty(
+          "--content-bg-color",
+          "#ffeadb"
+        );
+        document.documentElement.style.setProperty(
+          "--focused-border-color",
+          "#fca45d"
+        );
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#fca45d"
+        );
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#fddbb1"
+        );
+        document.documentElement.style.setProperty(
+          "--taskbar-logo-hover-bg-color",
+          "#fca45d"
+        );
         document.documentElement.style.setProperty(
           "--input-bg-color",
-          "#1b262c"
-        ); // Ocean Blue background color for inputs and select
+          "#fddbb1"
+        );
+        document.documentElement.style.setProperty(
+          "--input-text-color",
+          "#5a4238"
+        );
+        document.documentElement.style.setProperty(
+          "--input-border-color",
+          "#fca45d"
+        );
       } else {
         document.documentElement.style.setProperty("--bg-color", "#3f4455");
         document.documentElement.style.setProperty("--text-color", "#ffffff");
@@ -238,10 +303,7 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#4f5565"
         );
-        document.documentElement.style.setProperty(
-          "--input-bg-color",
-          "#292c37"
-        ); // Default background color for inputs and select
+        setInputFieldStyles("#282b36", "#292c37", "#ffffff");
       }
 
       localStorage.setItem("selectedTheme", this.selectedTheme);

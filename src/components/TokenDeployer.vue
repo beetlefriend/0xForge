@@ -99,9 +99,9 @@ h1 {
 .theme-select {
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid var(--border-color, #ffffff); /* Adjusted border color to white */
-  background-color: var(--component-bg-color, #292c37);
-  color: var(--text-color, #ffffff);
+  border: 1px solid var(--input-border-color, #292c37);
+  background-color: var(--input-bg-color, #292c37);
+  color: var(--input-text-color, #ffffff);
   margin-bottom: 20px;
 }
 
@@ -123,9 +123,9 @@ h1 {
 .details-section input[type="number"] {
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid var(--border-color, #ffffff); /* Adjusted border color to white */
-  background-color: var(--component-bg-color, #292c37);
-  color: var(--text-color, #ffffff);
+  border: 1px solid var(--input-border-color, #ffffff);
+  background-color: var(--input-bg-color, #292c37);
+  color: var(--input-text-color, #ffffff);
   width: 100%;
   margin-bottom: 10px;
   box-sizing: border-box;
@@ -140,9 +140,9 @@ h1 {
 .input-style {
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid var(--border-color, #ffffff); /* Adjusted border color to white */
-  background-color: var(--component-bg-color, #292c37);
-  color: var(--text-color, #ffffff);
+  border: 1px solid var(--input-border-color, #ffffff);
+  background-color: var(--input-bg-color, #292c37);
+  color: var(--input-text-color, #ffffff);
   margin-bottom: 20px;
   width: 100%;
 }
