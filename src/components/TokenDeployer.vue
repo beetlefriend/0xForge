@@ -1,30 +1,43 @@
 <template>
   <div class="token-deployer">
-    <h1>TOKEN CREATION</h1>
+    <!-- <pre>
+ 
+  Selected type: {{ selectedContractType }}
+
+  Values : {{ tokenDetails }}
+
+    </pre> -->
     <label for="contract-type" class="label-style"
       >Select Contract Type:
     </label>
-    <select
-      id="contract-type"
-      v-model="selectedContractType"
-      class="theme-select"
-    >
-      <option value="standard">
-        Standard ERC20 (No special functions, just supply)
-      </option>
-      <option value="taxAndSwap">
-        ERC20 with Buy/Sell Tax and Automatic Swap Handling
-      </option>
-      <option value="mintable">
+    <div style="display: flex; flex-direction: row">
+      <select
+        id="contract-type"
+        v-model="selectedContractType"
+        class="theme-select"
+        style="margin: 10px"
+      >
+        <option value="standard">
+          Standard ERC20 (No special functions, just supply)
+        </option>
+        <option value="taxAndSwap">
+          ERC20 with Buy/Sell Tax and Automatic Swap Handling
+        </option>
+        <!-- <option value="mintable">
         Mintable ERC20 (Allows for the creation of new tokens)
       </option>
 
-      <option value="capped">Capped ERC20 (Has a maximum supply limit)</option>
-      <!-- Add other contract types here -->
-    </select>
-    <button @click="navigateToDetailsPage" class="continue-button">
-      {{ showDetails ? "Back" : "Continue" }}
-    </button>
+      <option value="capped">Capped ERC20 (Has a maximum supply limit)</option> -->
+        <!-- Add other contract types here -->
+      </select>
+      <button
+        @click="navigateToDetailsPage"
+        class="continue-button"
+        style="margin: 10px"
+      >
+        {{ showDetails ? "Back" : "Continue" }}
+      </button>
+    </div>
 
     <div v-if="showDetails" class="details-section">
       <label for="name" class="label-style">Name: </label>
@@ -50,40 +63,60 @@
         class="input-style"
         type="number"
       />
+      <div
+        v-if="selectedContractType == 'taxAndSwap'"
+        style="display: flex; flex-wrap: wrap; gap: 10px"
+      >
+        <div style="flex: 1 1 45%">
+          <label for="max-transaction-amount" class="label-style"
+            >Max Transaction Amount:</label
+          >
+          <input
+            id="max-transaction-amount"
+            v-model="tokenDetails.maxTransactionAmount"
+            class="input-style"
+            type="number"
+            placeholder="Enter value in %"
+            step="0.1"
+          />
+        </div>
 
-      <label for="max-transaction-amount" class="label-style"
-        >Max Transaction Amount:
-      </label>
-      <input
-        id="max-transaction-amount"
-        v-model="tokenDetails.maxTransactionAmount"
-        class="input-style"
-        type="number"
-      />
+        <div style="flex: 1 1 45%">
+          <label for="max-wallet" class="label-style">Max Wallet:</label>
+          <input
+            id="max-wallet"
+            v-model="tokenDetails.maxWallet"
+            class="input-style"
+            type="number"
+            placeholder="Enter value in %"
+            step="0.1"
+          />
+        </div>
 
-      <label for="max-wallet" class="label-style">Max Wallet: </label>
-      <input
-        id="max-wallet"
-        v-model="tokenDetails.maxWallet"
-        class="input-style"
-        type="number"
-      />
+        <div style="flex: 1 1 45%">
+          <label for="buy-tax" class="label-style">Buy Tax (%):</label>
+          <input
+            id="buy-tax"
+            v-model="tokenDetails.buyTax"
+            class="input-style"
+            type="number"
+            placeholder="Enter value in %"
+            step="0.1"
+          />
+        </div>
 
-      <label for="buy-tax" class="label-style">Buy Tax: </label>
-      <input
-        id="buy-tax"
-        v-model="tokenDetails.buyTax"
-        class="input-style"
-        type="number"
-      />
-
-      <label for="sell-tax" class="label-style">Sell Tax: </label>
-      <input
-        id="sell-tax"
-        v-model="tokenDetails.sellTax"
-        class="input-style"
-        type="number"
-      />
+        <div style="flex: 1 1 45%">
+          <label for="sell-tax" class="label-style">Sell Tax (%):</label>
+          <input
+            id="sell-tax"
+            v-model="tokenDetails.sellTax"
+            class="input-style"
+            type="number"
+            placeholder="Enter value in %"
+            step="0.1"
+          />
+        </div>
+      </div>
 
       <div v-if="isLoading" class="loading-section">
         <img
@@ -116,10 +149,10 @@ export default {
         contractName: "PLACEHOLDER",
         contractTicker: "TICKER",
         contractSupply: 100000000,
-        maxTransactionAmount: 0,
-        maxWallet: 0,
-        buyTax: 0,
-        sellTax: 0,
+        maxTransactionAmount: null,
+        maxWallet: null,
+        buyTax: null,
+        sellTax: null,
       },
       isLoading: false,
       errorMessage: "",
@@ -162,6 +195,46 @@ export default {
         return false;
       }
 
+      if (
+        this.tokenDetails.maxWallet !== null &&
+        (isNaN(this.tokenDetails.maxWallet) ||
+          this.tokenDetails.maxWallet <= 0 ||
+          this.tokenDetails.maxWallet > 100)
+      ) {
+        this.errorMessage = "Invalid max wallet percentage";
+        return false;
+      }
+
+      if (
+        this.tokenDetails.maxTransactionAmount !== null &&
+        (isNaN(this.tokenDetails.maxTransactionAmount) ||
+          this.tokenDetails.maxTransactionAmount <= 0 ||
+          this.tokenDetails.maxTransactionAmount > 100)
+      ) {
+        this.errorMessage = "Invalid max transaction amount percentage";
+        return false;
+      }
+
+      if (
+        this.tokenDetails.buyTax !== null &&
+        (isNaN(this.tokenDetails.buyTax) ||
+          this.tokenDetails.buyTax < 0 ||
+          this.tokenDetails.buyTax > 100)
+      ) {
+        this.errorMessage = "Invalid buy tax percentage";
+        return false;
+      }
+
+      if (
+        this.tokenDetails.sellTax !== null &&
+        (isNaN(this.tokenDetails.sellTax) ||
+          this.tokenDetails.sellTax < 0 ||
+          this.tokenDetails.sellTax > 100)
+      ) {
+        this.errorMessage = "Invalid sell tax percentage";
+        return false;
+      }
+
       return true;
     },
 
@@ -174,6 +247,7 @@ export default {
         this.errorMessage = "One of your inputs is invalid";
         return;
       }
+
       try {
         const response = await fetch("http://localhost:3000/compile", {
           method: "POST",
@@ -188,34 +262,61 @@ export default {
 
         const result = await response.json();
 
-        console.log("Result", result);
-
-        console.log("Contract Bytecode:", result.bytecode);
-
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
         const account = accounts[0];
 
-        // Encode the constructor arguments
-        const encodedConstructorArgs = ethers.utils.defaultAbiCoder.encode(
-          ["string", "string", "uint256"],
-          [
-            this.tokenDetails.contractName,
-            this.tokenDetails.contractTicker,
-            this.tokenDetails.contractSupply,
-          ]
+        let contractSupplyInWei = ethers.utils.parseUnits(
+          this.tokenDetails.contractSupply.toString(),
+          18
         );
+        let encodedConstructorArgs;
+        if (this.selectedContractType === "standard") {
+          encodedConstructorArgs = ethers.utils.defaultAbiCoder.encode(
+            ["string", "string", "uint256"],
+            [
+              this.tokenDetails.contractName,
+              this.tokenDetails.contractTicker,
+              contractSupplyInWei,
+            ]
+          );
+        } else {
+          const maxWalletAmountInWei = contractSupplyInWei
+            .mul(this.tokenDetails.maxWallet)
+            .div(100);
+          const maxTransactionAmountInWei = contractSupplyInWei
+            .mul(this.tokenDetails.maxTransactionAmount)
+            .div(100);
 
-        // Append the encoded constructor arguments to the bytecode
+          encodedConstructorArgs = ethers.utils.defaultAbiCoder.encode(
+            [
+              "string",
+              "string",
+              "uint256",
+              "uint256",
+              "uint256",
+              "uint256",
+              "uint256",
+            ],
+            [
+              this.tokenDetails.contractName,
+              this.tokenDetails.contractTicker,
+              contractSupplyInWei,
+              maxWalletAmountInWei,
+              maxTransactionAmountInWei,
+              this.tokenDetails.buyTax,
+              this.tokenDetails.sellTax,
+            ]
+          );
+        }
+
         const bytecodeWithConstructorArgs =
           result.bytecode + encodedConstructorArgs.slice(2);
 
-        // Create the transaction
         const transaction = {
           from: account,
-          data: bytecodeWithConstructorArgs, // The bytecode of the contract with constructor args
-          gas: "0x2DC6C0", // Gas limit (you might need to adjust this)
+          data: bytecodeWithConstructorArgs,
         };
 
         const gasEstimate = await window.ethereum.request({
@@ -225,53 +326,45 @@ export default {
 
         transaction.gas = gasEstimate;
 
-        // Send the transaction
         const txHash = await window.ethereum.request({
           method: "eth_sendTransaction",
           params: [transaction],
         });
 
-        console.log("Transaction hash:", txHash);
-        this.errorMessage = "Hash: " + txHash;
-
-        // Listen for the receipt
         const receipt = await this.getTransactionReceipt(
           txHash,
           window.ethereum
         );
+
         if (receipt && receipt.contractAddress) {
           let deployedContracts =
             JSON.parse(localStorage.getItem("deployedContracts")) || [];
 
-          // Add new contract details to the array
           deployedContracts.push({
             address: receipt.contractAddress,
-            sourceCode: result.sourceCode, // Assuming result.sourceCode contains the source code
+            sourceCode: result.sourceCode,
             abi: result.abi,
             bytecode: result.bytecode,
             contractName: this.tokenDetails.contractName,
             contractTicker: this.tokenDetails.contractTicker,
-            // ...other details you might want to save
           });
 
-          // Save the updated array back to local storage
           localStorage.setItem(
             "deployedContracts",
             JSON.stringify(deployedContracts)
           );
 
-          // Open the Token Manager component
           this.$store.dispatch("openWindow", {
-            id: 5, // or whatever the ID for TokenManager.vue is
+            id: 5,
           });
         }
       } catch (error) {
-        console.error("Error deploying contract:", error);
         this.errorMessage = error.message;
       } finally {
         this.isLoading = false;
       }
     },
+
     async getTransactionReceipt(hash, ethereum) {
       let receipt = null;
       while (receipt == null) {

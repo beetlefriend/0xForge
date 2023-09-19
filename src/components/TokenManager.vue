@@ -1,77 +1,98 @@
 <template>
   <div class="token-manager">
-    <h2 class="token-manager-title">Token Manager</h2>
-    <div class="contract-selector">
-      Your Contracts:
-      <br />
-      <select
-        v-model="selectedContract"
-        @change="loadContractDetails"
-        class="custom-select"
-      >
-        <option
-          v-for="contract in contracts"
-          :key="contract.address"
-          :value="contract.address"
-        >
-          {{ contract.address }}
-        </option>
-      </select>
-    </div>
+    <div class="main-content">
+      <h2 class="token-manager-title">Token Manager</h2>
 
-    <div class="token-info">
-      <br />
-      <hr />
-      <br />
-      <p class="token-info-item">Token Address: {{ selectedContract }}</p>
-      <p class="token-info-item">
-        Your Token Balance: {{ tokenBalance }} TOKENS
-      </p>
-      <p class="token-info-item">Token Name: {{ tokenName }}</p>
-      <p class="token-info-item">Token Ticker: {{ tokenTicker }}</p>
-      <p class="token-info-item">Token Supply: {{ tokenSupply }}</p>
-    </div>
-
-    <div
-      class="functions-section"
-      :style="{ height: '600px', overflowY: 'scroll' }"
-    >
-      <div v-for="func in filteredFunctions" :key="func.name">
-        <h3 class="section-title">
-          {{ func.name }} ({{ func.stateMutability }})
-        </h3>
-        <div
-          class="input-group"
-          v-for="(input, index) in func.inputs"
-          :key="index"
+      <div class="section contract-selector">
+        <label for="contractSelector">Your Contracts:</label>
+        <select
+          id="contractSelector"
+          v-model="selectedContract"
+          @change="loadContractDetails"
+          class="custom-select"
         >
-          <label :for="input.name">{{ input.name }} ({{ input.type }}):</label>
-          <input
-            :type="input.type === 'address' ? 'text' : 'number'"
-            :id="input.name"
-            v-model="input.value"
-            class="custom-input"
-          />
+          <option
+            v-for="contract in contracts"
+            :key="contract.address"
+            :value="contract.address"
+          >
+            {{ contract.address }}
+          </option>
+        </select>
+      </div>
+
+      <div class="section token-info">
+        <h3>Token Information</h3>
+        <div>
+          <p>Token Address: {{ selectedContract }}</p>
+          <!-- <p>Your Token Balance: {{ tokenBalance }}</p> -->
+          <p>Token Name: {{ tokenName }}</p>
+          <p>Token Ticker: {{ tokenTicker }}</p>
+          <p>Token Supply: {{ tokenSupply }}</p>
         </div>
-        <button @click="executeFunction(func, func.inputs)" class="button">
-          {{
-            func.stateMutability === "view"
-              ? "Read"
-              : func.stateMutability === "payable"
-              ? "Send"
-              : "Write"
-          }}
-        </button>
+
+        <div class="action-group">
+          <button class="action-button" @click="addLiquidity">
+            Add Liquidity (via Uniswap)
+          </button>
+          <button class="action-button" @click="lockLiquidity">
+            Lock Liquidity (via Unicrypt)
+          </button>
+          <button class="verify-button" @click="verifyContract">
+            Verify Contract
+          </button>
+        </div>
+      </div>
+
+      <div class="section advanced-mode-toggle">
+        <input type="checkbox" id="advancedMode" v-model="simpleMode" />
+        <label for="advancedMode">Simple Mode</label>
+      </div>
+
+      <div v-if="transactionStatus" class="section transaction-status">
+        <h4>Transaction Status:</h4>
+        {{ transactionStatus }}
       </div>
     </div>
 
-    <div class="advanced-mode-toggle">
-      <input type="checkbox" id="advancedMode" v-model="simpleMode" />
-      <label for="advancedMode">Simple Mode</label>
-    </div>
-    <div v-if="transactionStatus" class="transaction-status">
-      <h4 class="transaction-status-title">Transaction Status:</h4>
-      {{ transactionStatus }}
+    <div class="contract-functions">
+      <div class="section functions-section">
+        <h3>Contract Functions</h3>
+        <div
+          v-for="func in filteredFunctions"
+          :key="func.name"
+          class="function-item"
+        >
+          <h4>{{ func.name }} ({{ func.stateMutability }})</h4>
+          <div
+            v-for="(input, index) in func.inputs"
+            :key="index"
+            class="input-group"
+          >
+            <label :for="input.name"
+              >{{ input.name }} ({{ input.type }}):</label
+            >
+            <input
+              :type="input.type === 'address' ? 'text' : 'number'"
+              :id="input.name"
+              v-model="input.value"
+              class="custom-input"
+            />
+          </div>
+          <button
+            @click="executeFunction(func, func.inputs)"
+            class="action-button"
+          >
+            {{
+              func.stateMutability === "view"
+                ? "Read"
+                : func.stateMutability === "payable"
+                ? "Send"
+                : "Write"
+            }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -94,6 +115,7 @@ export default {
       tokenSupply: 0,
       contractFunctions: [],
       simpleMode: true,
+      currentContractDetails: null,
     };
   },
   computed: {
@@ -106,18 +128,22 @@ export default {
     },
   },
   methods: {
+    async verifyContract() {
+      // Implement your contract verification logic here
+    },
     async loadContractDetails() {
       const contractDetails = this.contracts.find(
         (contract) => contract.address === this.selectedContract
       );
       if (contractDetails) {
-        this.currentContractDetails = contractDetails;
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const contractInstance = new ethers.Contract(
           this.selectedContract,
           contractDetails.abi,
           provider
         );
+        this.currentContractDetails = contractInstance; // Updating currentContractDetails here
+
         try {
           this.tokenName = await contractInstance.name();
           this.tokenTicker = await contractInstance.symbol();
@@ -129,7 +155,7 @@ export default {
             (func) => func.type === "function"
           );
         } catch (error) {
-          console.error("Error fetching token details:", error);
+          console.error(error);
         }
       } else {
         console.error("Contract details not found");
@@ -141,7 +167,7 @@ export default {
         const signer = provider.getSigner();
         const contractInstance = new ethers.Contract(
           this.selectedContract,
-          this.currentContractDetails.abi,
+          this.currentContractDetails.interface,
           func.stateMutability === "view" ? provider : signer
         );
 
@@ -157,6 +183,12 @@ export default {
         this.transactionStatus = `Error: ${error.message}`;
       }
     },
+    addLiquidity() {
+      // Add your addLiquidity method implementation here
+    },
+    lockLiquidity() {
+      // Add your lockLiquidity method implementation here
+    },
   },
   created() {
     if (this.contracts.length > 0) {
@@ -169,79 +201,119 @@ export default {
 
 <style scoped>
 .token-manager {
-  width: 700px;
-
-  height: auto;
-  background-color: var(--component-bg-color, #292c37);
-  color: var(--text-color);
+  display: flex;
+  width: 900px;
+  background-color: var(--component-bg-color);
   padding: 20px;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  margin: 0 auto;
+  color: var(--text-color);
   font-family: var(--font-family);
-  overflow-y: auto;
-  position: relative; /* Make this relative to position the toggle button */
 }
-.token-manager::-webkit-scrollbar {
-  width: 10px;
-}
-.token-manager::-webkit-scrollbar-track {
-  background-color: #2e2e2e;
-}
-.token-manager::-webkit-scrollbar-thumb {
-  background-color: #535353;
-}
-.token-manager::-webkit-scrollbar-thumb:hover {
-  background-color: #636363;
-}
-.contract-selector,
-.token-info,
-.read-section,
-.transfer-section,
-.transaction-status {
+
+.token-manager-title {
   margin-bottom: 20px;
-  overflow: auto;
-}
-.contract-selector select,
-.input-group input {
-  width: 100%;
-  padding: 10px;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
-  margin-bottom: 10px;
-}
-.section-title {
   font-size: var(--font-size-lg);
-  margin-bottom: 10px;
 }
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
+
+.main-content {
+  width: 60%;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  background-color: var(--component-bg-color);
+  margin-right: 20px;
 }
-.button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--button-bg-color, #3f4455);
-  color: var(--text-color, #ffffff);
-  cursor: pointer;
+
+.contract-functions {
+  width: 35%;
+  padding: 20px;
+  max-height: 600px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  background-color: var(--component-bg-color);
+}
+
+.section {
   margin-bottom: 20px;
 }
-.button:hover {
-  background-color: var(--button-hover-bg-color, #4f5565);
+
+.section h3 {
+  margin-bottom: 15px;
+  font-size: 1.25em;
 }
+
+.action-group {
+  display: flex;
+  gap: 10px;
+}
+
+.action-button,
+.verify-button {
+  padding: 10px;
+  border: none;
+  background-color: var(--button-bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  font-size: 0.9em;
+  margin-top: 10px;
+}
+
+.action-button:hover,
+.verify-button:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+.function-item {
+  margin-bottom: 15px;
+}
+
+.function-item h4 {
+  margin-bottom: 10px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.custom-select,
+.custom-input {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--component-bg-color);
+  color: var(--text-color);
+}
+
+.custom-input {
+  margin-top: 5px;
+}
+
 .advanced-mode-toggle {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
   display: flex;
   align-items: center;
-  background-color: var(--component-bg-color, #292c37);
-  padding: 10px;
-  border-radius: var(--border-radius);
+  margin-bottom: 20px;
 }
-.advanced-mode-toggle label {
-  margin-left: 10px;
-  color: var(--text-color);
+
+.transaction-status {
+  margin-top: 20px;
+}
+
+/* Scrollbar Styles */
+.contract-functions::-webkit-scrollbar {
+  width: 8px;
+}
+.contract-functions::-webkit-scrollbar-track {
+  background-color: #2e2e2e;
+}
+.contract-functions::-webkit-scrollbar-thumb {
+  background-color: #535353;
+}
+.contract-functions::-webkit-scrollbar-thumb:hover {
+  background-color: #636363;
 }
 </style>
