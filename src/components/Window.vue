@@ -201,7 +201,7 @@ export default defineComponent({
   min-width: 200px;
   min-height: 100px;
   font-family: "Tahoma", sans-serif;
-  opacity: .8;
+  opacity: .5;
 }
 .window.focused {
   border-color: var(--focused-border-color, rgb(146, 146, 146));

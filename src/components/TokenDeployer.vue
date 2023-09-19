@@ -50,14 +50,25 @@
         class="input-style"
         type="number"
       />
+      <div v-if="isLoading" class="loading-section">
+        <img
+          src="https://media0.giphy.com/media/fphXG8dDcRHVavls9o/giphy.gif?cid=6c09b952xfu2sxfviqq18vx548mdhhwwujnc2t78qvjtzj3b&ep=v1_stickers_related&rid=giphy.gif&ct=s"
+          alt="Loading..."
+        />
+        <br />
+        <p>Deploying contract, please interact with metamask appropriately.</p>
+      </div>
+
+      <div v-if="errorMessage" class="error-section">
+        <p>{{ errorMessage }}</p>
+      </div>
+
       <button @click="deployContract" class="deploy-button">Deploy</button>
     </div>
   </div>
 </template>
 
 <script>
-import * as solc from "solc-js";
-
 import { ethers } from "ethers";
 
 export default {
@@ -67,86 +78,174 @@ export default {
       selectedContractType: "standard",
       showDetails: false,
       tokenDetails: {
-        contractName: "PLACEHOLDER_NAME",
-        contractTicker: "PLACEHOLDER_TICKER",
-        contractSupply: "PLACEHOLDER_SUPPLY",
+        contractName: "PLACEHOLDER",
+        contractTicker: "TICKER",
+        contractSupply: 100000000,
       },
+      isLoading: false,
+      errorMessage: "",
     };
+  },
+  created() {
+    // window.ethereum.on("message", (error) => {
+    //   console.error("MetaMask error:", error);
+    //   this.errorMessage = error.message;
+    // });
   },
   methods: {
     navigateToDetailsPage() {
       this.showDetails = !this.showDetails;
     },
+    validateInputs() {
+      if (
+        !this.tokenDetails.contractName ||
+        this.tokenDetails.contractName.includes(" ")
+      ) {
+        this.errorMessage = "Invalid contract name";
+        return false;
+      }
+
+      if (
+        !this.tokenDetails.contractTicker ||
+        this.tokenDetails.contractTicker.includes(" ") ||
+        this.tokenDetails.contractTicker.length > 10
+      ) {
+        this.errorMessage = "Invalid contract ticker";
+        return false;
+      }
+
+      if (
+        !this.tokenDetails.contractSupply ||
+        isNaN(this.tokenDetails.contractSupply) ||
+        this.tokenDetails.contractSupply <= 0
+      ) {
+        this.errorMessage = "Invalid contract supply";
+        return false;
+      }
+
+      return true;
+    },
 
     async deployContract() {
+      this.isLoading = true;
+      this.errorMessage = "";
+
+      if (!this.validateInputs()) {
+        this.isLoading = false;
+        this.errorMessage = "One of your inputs is invalid";
+        return;
+      }
       try {
-        // Step 1: Connect to MetaMask
-        if (typeof window.ethereum !== "undefined") {
-          await window.ethereum.request({ method: "eth_requestAccounts" });
-          const provider = new ethers.providers.Web3Provider(window.ethereum);
-          const signer = provider.getSigner();
+        const response = await fetch("http://localhost:3000/compile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contractType: this.selectedContractType,
+            tokenDetails: this.tokenDetails,
+          }),
+        });
 
-          // Step 2: Load the contract source code
-          const contractSource = "..."; // Load your contract source code here
+        const result = await response.json();
 
-          // Step 3: Compile the contract
-          const solc = require("solc-js");
-          let solcInstance;
-          solc.loadRemoteVersion(
-            "v0.8.7+commit.e28d00a7",
-            function (err, solInstance) {
-              if (err) {
-                console.error(err);
-                return;
-              }
-              solcInstance = solInstance;
-            }
+        console.log("Result", result);
+
+        console.log("Contract Bytecode:", result.bytecode);
+
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const account = accounts[0];
+
+        // Encode the constructor arguments
+        const encodedConstructorArgs = ethers.utils.defaultAbiCoder.encode(
+          ["string", "string", "uint256"],
+          [
+            this.tokenDetails.contractName,
+            this.tokenDetails.contractTicker,
+            this.tokenDetails.contractSupply,
+          ]
+        );
+
+        // Append the encoded constructor arguments to the bytecode
+        const bytecodeWithConstructorArgs =
+          result.bytecode + encodedConstructorArgs.slice(2);
+
+        // Create the transaction
+        const transaction = {
+          from: account,
+          data: bytecodeWithConstructorArgs, // The bytecode of the contract with constructor args
+          gas: "0x2DC6C0", // Gas limit (you might need to adjust this)
+        };
+
+        const gasEstimate = await window.ethereum.request({
+          method: "eth_estimateGas",
+          params: [transaction],
+        });
+
+        transaction.gas = gasEstimate;
+
+        // Send the transaction
+        const txHash = await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [transaction],
+        });
+
+        console.log("Transaction hash:", txHash);
+        this.errorMessage = "Hash: " + txHash;
+
+        // Listen for the receipt
+        const receipt = await this.getTransactionReceipt(
+          txHash,
+          window.ethereum
+        );
+        if (receipt && receipt.contractAddress) {
+          let deployedContracts =
+            JSON.parse(localStorage.getItem("deployedContracts")) || [];
+
+          // Add new contract details to the array
+          deployedContracts.push({
+            address: receipt.contractAddress,
+            sourceCode: result.sourceCode, // Assuming result.sourceCode contains the source code
+            abi: result.abi,
+            bytecode: result.bytecode,
+            contractName: this.tokenDetails.contractName,
+            contractTicker: this.tokenDetails.contractTicker,
+            // ...other details you might want to save
+          });
+
+          // Save the updated array back to local storage
+          localStorage.setItem(
+            "deployedContracts",
+            JSON.stringify(deployedContracts)
           );
 
-          // Ensure solcInstance is loaded before proceeding
-          while (!solcInstance) {
-            await new Promise((resolve) => setTimeout(resolve, 100));
-          }
-
-          const input = {
-            language: "Solidity",
-            sources: {
-              "contract.sol": {
-                content: contractSource,
-              },
-            },
-            settings: {
-              outputSelection: {
-                "*": {
-                  "*": ["*"],
-                },
-              },
-            },
-          };
-
-          const output = JSON.parse(
-            solcInstance.compile(JSON.stringify(input))
-          );
-          const contractInterface =
-            output.contracts["contract.sol"].YourContractName.abi;
-          const contractBytecode =
-            output.contracts["contract.sol"].YourContractName.evm.bytecode
-              .object;
-
-          // Step 4: Deploy the contract
-          const ContractFactory = new ethers.ContractFactory(
-            contractInterface,
-            contractBytecode,
-            signer
-          );
-          const contract = await ContractFactory.deploy();
-          console.log("Contract deployed to address:", contract.address);
-        } else {
-          console.error("MetaMask is not installed");
+          // Open the Token Manager component
+          this.$store.dispatch("openWindow", {
+            id: 5, // or whatever the ID for TokenManager.vue is
+          });
         }
       } catch (error) {
         console.error("Error deploying contract:", error);
+        this.errorMessage = error.message;
+      } finally {
+        this.isLoading = false;
       }
+    },
+    async getTransactionReceipt(hash, ethereum) {
+      let receipt = null;
+      while (receipt == null) {
+        receipt = await ethereum.request({
+          method: "eth_getTransactionReceipt",
+          params: [hash],
+        });
+        if (!receipt) {
+          // Wait for a bit before trying again
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+        }
+      }
+      return receipt;
     },
   },
 };
@@ -235,5 +334,22 @@ h1 {
 
 .deploy-button:hover {
   background-color: var(--button-hover-bg-color, #4f5565);
+}
+
+.loading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.loading-section img {
+  width: 50px;
+  height: 50px;
+}
+
+.error-section {
+  color: red;
+  margin-bottom: 20px;
 }
 </style>

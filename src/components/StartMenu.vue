@@ -34,6 +34,13 @@
               />
               Tokencreator
             </li>
+            <li class="start-menu-sub-item" @click="openTokenmanager">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/2165/2165640.png"
+                class="start-menu-icon"
+              />
+              Token Manager
+            </li>
             <li class="start-menu-sub-item" @click="openThemes">
               <img
                 src="https://png.pngtree.com/png-vector/20221010/ourmid/pngtree-theme-icon-vector-png-image_6293125.png"
@@ -155,6 +162,12 @@ export default {
       // code to open About.txt here
       this.$store.dispatch("openWindow", {
         id: 4,
+      });
+    },
+
+    openTokenmanager() {
+      this.$store.dispatch("openWindow", {
+        id: 5,
       });
     },
     // openRoadmap() {

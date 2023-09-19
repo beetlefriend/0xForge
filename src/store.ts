@@ -81,6 +81,21 @@ const createInitialWindows = (): WindowData[] => [
     closed: true,
     zIndex: 1,
   },
+
+  
+  {
+    id: 5,
+    title: "Token Manager",
+    isMinimized: true,
+    focused: false,
+    width: 700,
+    height: 500,
+    x: 0.5 * (window.innerWidth - 700),
+    y: 0.5 * (window.innerHeight - 500),
+    startsclosed: true,
+    closed: true,
+    zIndex: 1,
+  },
   // {
   //   id: 5,
   //   title: "Tokenomics.txt",

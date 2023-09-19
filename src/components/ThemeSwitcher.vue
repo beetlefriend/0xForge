@@ -12,11 +12,40 @@
       <option value="solarizedDark">Solarized Dark</option>
       <option value="oceanBlue">Ocean Blue</option>
       <option value="warm">Warm</option>
+      <option value="cyberpunk">Cyberpunk</option>
     </select>
 
     <label for="bg-image">Background Image URL: </label>
-    <input id="bg-image" type="text" v-model="bgImageUrl" />
+    {{
+      useGradientBackground
+        ? "Disable gradient background to use image url"
+        : ""
+    }}
+    <input
+      :disabled="useGradientBackground ? true : false"
+      id="bg-image"
+      type="text"
+      v-model="bgImageUrl"
+    />
     <button @click="changeBackgroundImage">Set Background</button>
+
+    <label>
+      <input
+        type="checkbox"
+        v-model="useGradientBackground"
+        @change="applyBackground"
+      />
+      Use Gradient Background
+    </label>
+    <label>
+      <input
+        :disabled="useGradientBackground ? false : true"
+        type="checkbox"
+        v-model="useAnimatedBackground"
+        @change="applyBackground"
+      />
+      Animated
+    </label>
   </div>
 </template>
 
@@ -26,6 +55,22 @@ export default {
     return {
       selectedTheme: localStorage.getItem("selectedTheme") || "existing",
       bgImageUrl: localStorage.getItem("bgImageUrl") || "",
+      useGradientBackground:
+        JSON.parse(localStorage.getItem("useGradientBackground")) || false,
+      useAnimatedBackground:
+        JSON.parse(localStorage.getItem("useGradientAnimation")) || false,
+      gradients: {
+        light: "linear-gradient(45deg, #f5f5f5 25%, #e0e0e0 50%, #f5f5f5 75%)",
+        cyberpunk:
+          "linear-gradient(45deg, #ff206e 25%, #8833ff 50%, #ff206e 75%)",
+        solarizedDark:
+          "linear-gradient(45deg, #002b36 25%, #073642 50%, #002b36 75%)",
+        oceanBlue:
+          "linear-gradient(45deg, #0077be 25%, #33a8ff 50%, #0077be 75%)",
+        warm: "linear-gradient(45deg, #ff5733 25%, #ff914d 50%, #ff5733 75%)",
+        default:
+          "linear-gradient(45deg, #8f8f8f 25%, #bfbfbf 50%, #8f8f8f 75%)",
+      },
     };
   },
   mounted() {
@@ -125,6 +170,53 @@ export default {
           "#e0e0e0"
         );
         setInputFieldStyles("#ccc", "#ffffff", "#000");
+      } else if (this.selectedTheme === "cyberpunk") {
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#ff206e"
+        ); // Hot Pink for hover effect on buttons
+        document.documentElement.style.setProperty("--bg-color", "#0b0033"); // Very dark purple for background
+        document.documentElement.style.setProperty("--text-color", "#00ff41"); // Bright green for text
+        document.documentElement.style.setProperty(
+          "--component-bg-color",
+          "#190061"
+        ); // Dark purple for component background
+        document.documentElement.style.setProperty("--border-color", "#800080"); // Purple for borders
+        document.documentElement.style.setProperty(
+          "--box-shadow",
+          "0 0 5px rgba(128, 0, 128, 0.5)"
+        ); // Box shadow with a purple hue
+        document.documentElement.style.setProperty(
+          "--title-bg-color",
+          "#330086"
+        ); // Darker purple for title background
+        document.documentElement.style.setProperty(
+          "--button-bg-color",
+          "#bb00bb"
+        ); // Purple for buttons
+        document.documentElement.style.setProperty(
+          "--content-bg-color",
+          "#120033"
+        ); // Slightly lighter purple for content background
+        document.documentElement.style.setProperty(
+          "--focused-border-color",
+          "#ff00ff"
+        ); // Bright pink for focused border color
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#ff206e"
+        ); // Hot Pink for menu item hover background color
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#240066"
+        ); // Dark purple for submenu background color
+        document.documentElement.style.setProperty(
+          "--taskbar-logo-hover-bg-color",
+          "#ff00ff"
+        ); // Bright pink for taskbar logo hover background color
+
+        // Set input field styles with a coherent color scheme
+        setInputFieldStyles("#800080", "#240066", "#00ff41");
       } else if (this.selectedTheme === "solarizedDark") {
         document.documentElement.style.setProperty(
           "--button-hover-bg-color",
@@ -280,17 +372,13 @@ export default {
           "#fca45d"
         );
       } else {
-        document.documentElement.style.setProperty(
-          "--button-hover-bg-color",
-          "#4f5565"
-        ); // A shade darker for the default theme
         document.documentElement.style.setProperty("--bg-color", "#3f4455");
         document.documentElement.style.setProperty("--text-color", "#ffffff");
         document.documentElement.style.setProperty(
           "--component-bg-color",
           "#292c37"
         );
-        document.documentElement.style.setProperty("--border-color", "#282b36");
+        document.documentElement.style.setProperty("--border-color", "#4f5565"); // Adjusted color
         document.documentElement.style.setProperty(
           "--box-shadow",
           "0 0 5px rgba(167, 167, 167, 0.2)"
@@ -323,18 +411,101 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#4f5565"
         );
-        setInputFieldStyles("#282b36", "#292c37", "#ffffff");
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#4f5565"
+        ); // A shade darker for warm theme
+        setInputFieldStyles("#4f5565", "#292c37", "#ffffff"); // Adjusted color
       }
+      localStorage.setItem("selectedTheme", this.selectedTheme);
 
       localStorage.setItem("selectedTheme", this.selectedTheme);
+
+      this.applyBackground();
     },
 
     changeBackgroundImage() {
+      if (this.bgImageUrl == "") {
+        this.bgImageUrl = "https://i.imgur.com/U0EJEUa.jpeg";
+      }
       document.documentElement.style.setProperty(
         "--bg-image",
         `url(${this.bgImageUrl})`
       );
       localStorage.setItem("bgImageUrl", this.bgImageUrl);
+
+      this.applyBackground(); // update this part to call applyBackground
+    },
+    injectKeyframes() {
+      let styleSheet = document.styleSheets[0];
+      let keyframes = `
+   @keyframes gradientAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+     }`;
+      styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+    },
+
+    applyBackground() {
+      const appElement = document.querySelector("#appContainer");
+
+      if (this.useGradientBackground) {
+        let gradientBackground = "";
+        if (this.selectedTheme === "light") {
+          gradientBackground = this.gradients.light;
+        } else if (this.selectedTheme === "cyberpunk") {
+          gradientBackground = this.gradients.cyberpunk;
+        } else if (this.selectedTheme === "solarizedDark") {
+          gradientBackground = this.gradients.solarizedDark;
+        } else if (this.selectedTheme === "oceanBlue") {
+          gradientBackground = this.gradients.oceanBlue;
+        } else if (this.selectedTheme === "warm") {
+          gradientBackground = this.gradients.warm;
+        } else {
+          gradientBackground = this.gradients.default;
+        }
+
+        appElement.style.backgroundImage = gradientBackground;
+
+        if (this.useAnimatedBackground) {
+          this.injectKeyframes();
+          appElement.style.backgroundSize = "200% 200%";
+          appElement.style.animation = "gradientAnimation 50s ease infinite";
+        } else {
+          appElement.style.animation = "";
+        }
+      } else {
+        appElement.style.backgroundImage =
+          'var(--bg-image, url("https://i.imgur.com/U0EJEUa.jpeg"))';
+        let bgImageUrl = this.bgImageUrl;
+        if (bgImageUrl != "") {
+          document.documentElement.style.setProperty(
+            "--bg-image",
+            `url(${bgImageUrl})`
+          );
+        } else {
+          console.log("No background image");
+
+          // document.documentElement.style.removeProperty("--bg-image");
+        }
+
+        appElement.style.animation = "";
+      }
+      localStorage.setItem(
+        "useGradientBackground",
+        JSON.stringify(this.useGradientBackground)
+      );
+      localStorage.setItem(
+        "useGradientAnimation",
+        JSON.stringify(this.useAnimatedBackground)
+      );
     },
   },
 };
@@ -387,5 +558,17 @@ export default {
 
 .theme-switcher input[type="text"]:focus {
   border-color: var(--focused-border-color, #586e75);
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 </style>

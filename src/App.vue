@@ -73,6 +73,9 @@ body {
 html {
   scroll-behavior: smooth !important;
 }
+
+
+
 /* .v-text-field input {
   font-size: 1em;
 }

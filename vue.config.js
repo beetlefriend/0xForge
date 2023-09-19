@@ -9,6 +9,14 @@ module.exports = defineConfig({
 
 module.exports = {
     configureWebpack: {
+      module: {
+        rules: [
+          {
+            test: /\.sol$/,
+            use: 'solidity-loader',
+          },
+        ],
+      },
       resolve: {
         fallback: {
           crypto: require.resolve("crypto-browserify"),
