@@ -50,6 +50,41 @@
         class="input-style"
         type="number"
       />
+
+      <label for="max-transaction-amount" class="label-style"
+        >Max Transaction Amount:
+      </label>
+      <input
+        id="max-transaction-amount"
+        v-model="tokenDetails.maxTransactionAmount"
+        class="input-style"
+        type="number"
+      />
+
+      <label for="max-wallet" class="label-style">Max Wallet: </label>
+      <input
+        id="max-wallet"
+        v-model="tokenDetails.maxWallet"
+        class="input-style"
+        type="number"
+      />
+
+      <label for="buy-tax" class="label-style">Buy Tax: </label>
+      <input
+        id="buy-tax"
+        v-model="tokenDetails.buyTax"
+        class="input-style"
+        type="number"
+      />
+
+      <label for="sell-tax" class="label-style">Sell Tax: </label>
+      <input
+        id="sell-tax"
+        v-model="tokenDetails.sellTax"
+        class="input-style"
+        type="number"
+      />
+
       <div v-if="isLoading" class="loading-section">
         <img
           src="https://media0.giphy.com/media/fphXG8dDcRHVavls9o/giphy.gif?cid=6c09b952xfu2sxfviqq18vx548mdhhwwujnc2t78qvjtzj3b&ep=v1_stickers_related&rid=giphy.gif&ct=s"
@@ -81,6 +116,10 @@ export default {
         contractName: "PLACEHOLDER",
         contractTicker: "TICKER",
         contractSupply: 100000000,
+        maxTransactionAmount: 0,
+        maxWallet: 0,
+        buyTax: 0,
+        sellTax: 0,
       },
       isLoading: false,
       errorMessage: "",
