@@ -1,5 +1,5 @@
 <template>
-  <div class="token-manager">
+  <div class="token-manager" v-if="contracts.length > 0">
     <div class="main-content">
       <h2 class="token-manager-title">Token Manager</h2>
 
@@ -95,10 +95,14 @@
       </div>
     </div>
   </div>
+  <div v-else>You have no deployed contracts</div>
 </template>
 
 <script>
 import { ethers } from "ethers";
+import qs from "qs";
+
+import axios from "axios";
 
 export default {
   data() {
@@ -129,8 +133,113 @@ export default {
   },
   methods: {
     async verifyContract() {
-      // Implement your contract verification logic here
+      const contractAddress = this.selectedContract;
+      const deployedContracts = JSON.parse(
+        localStorage.getItem("deployedContracts")
+      );
+
+      // Find the specific contract using the contractName or other unique identifier
+      const contract = deployedContracts.find(
+        (c) => c.address === contractAddress
+      );
+      if (!contract) {
+        console.error("Contract not found");
+        return;
+      }
+
+      // Determine the types array based on the contract's contractType property
+      let types;
+      switch (contract.contractType) {
+        case "standard":
+          types = ["string", "string", "uint256"];
+          break;
+
+        case "taxAndSwap":
+          types = [
+            "string",
+            "string",
+            "uint256",
+            "uint256",
+            "uint256",
+            "uint256",
+            "uint256",
+          ];
+          break;
+        // Add other contract types here as necessary
+        default:
+          console.error("Unknown contract type");
+          return;
+      }
+
+      const abiCoder = new ethers.utils.AbiCoder();
+      const cArgs = abiCoder.encode(types, contract.constructorArguments);
+
+      const data = {
+        apikey: "FGF5BR31KUH57GMZ15NXKQ1KS3UFP632GD", // Assuming you have stored the API key directly in the localStorage
+        module: "contract",
+        action: "verifysourcecode",
+        contractaddress: contract.address,
+        sourceCode: contract.sourceCode,
+        contractname: contract.contractName,
+        compilerversion: contract.compilerVersion,
+        optimizationUsed: 0, // Adjust as necessary based on your contract's settings
+        runs: 0, // Adjust as necessary based on your contract's settings
+        constructorArguements: cArgs.slice(2),
+      };
+
+      try {
+        const response = await axios({
+          method: "post",
+          url: "https://api-goerli.etherscan.io/api",
+          data: qs.stringify(data),
+          headers: {
+            "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        });
+
+        if (response.data.status == "1") {
+          console.log(
+            "Contract verification initiated successfully. Check the GUID in the message below for progress"
+          );
+          console.log(response.data);
+
+          const guid = response.data.result;
+
+          const verificationCheckInterval = setInterval(async () => {
+            const checkData = {
+              guid: guid,
+              module: "contract",
+              action: "checkverifystatus",
+              apikey: "FGF5BR31KUH57GMZ15NXKQ1KS3UFP632GD",
+            };
+
+            const checkResponse = await axios({
+              method: "post",
+              url: "https://api-goerli.etherscan.io/api",
+              data: qs.stringify(checkData),
+              headers: {
+                "content-type":
+                  "application/x-www-form-urlencoded;charset=utf-8",
+              },
+            });
+
+            console.log("Verification check response:", checkResponse.data);
+
+            if (checkResponse.data.result != "Pending in queue") {
+              clearInterval(verificationCheckInterval);
+            }
+          }, 5000);
+        } else {
+          console.log(
+            "Contract verification failed. See the message below for more details"
+          );
+          console.log(response.data);
+        }
+      } catch (error) {
+        console.log("Error during contract verification:", error);
+      }
     },
+
     async loadContractDetails() {
       const contractDetails = this.contracts.find(
         (contract) => contract.address === this.selectedContract

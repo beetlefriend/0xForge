@@ -340,6 +340,32 @@ export default {
           let deployedContracts =
             JSON.parse(localStorage.getItem("deployedContracts")) || [];
 
+          let constructorArguments;
+          if (this.selectedContractType === "standard") {
+            constructorArguments = [
+              this.tokenDetails.contractName,
+              this.tokenDetails.contractTicker,
+              contractSupplyInWei,
+            ];
+          } else {
+            const maxWalletAmountInWei = contractSupplyInWei
+              .mul(this.tokenDetails.maxWallet)
+              .div(100);
+            const maxTransactionAmountInWei = contractSupplyInWei
+              .mul(this.tokenDetails.maxTransactionAmount)
+              .div(100);
+
+            constructorArguments = [
+              this.tokenDetails.contractName,
+              this.tokenDetails.contractTicker,
+              contractSupplyInWei,
+              maxWalletAmountInWei,
+              maxTransactionAmountInWei,
+              this.tokenDetails.buyTax,
+              this.tokenDetails.sellTax,
+            ];
+          }
+
           deployedContracts.push({
             address: receipt.contractAddress,
             sourceCode: result.sourceCode,
@@ -347,6 +373,9 @@ export default {
             bytecode: result.bytecode,
             contractName: this.tokenDetails.contractName,
             contractTicker: this.tokenDetails.contractTicker,
+            constructorArguments: constructorArguments, // saving constructor arguments
+            compilerVersion: result.compilerVersion, // assuming that compiler version is available in result, if not please adjust
+            contractType: this.selectedContractType, // saving contract type
           });
 
           localStorage.setItem(
