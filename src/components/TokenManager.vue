@@ -1,5 +1,6 @@
 <template>
   <div class="token-manager" v-if="contracts.length > 0">
+    
     <div class="main-content">
       <h2 class="token-manager-title">Token Manager</h2>
 
@@ -29,6 +30,10 @@
           <p>Token Name: {{ tokenName }}</p>
           <p>Token Ticker: {{ tokenTicker }}</p>
           <p>Token Supply: {{ tokenSupply }}</p>
+
+          <pre>
+            
+          </pre>
         </div>
 
         <div class="action-group">
@@ -173,18 +178,23 @@ export default {
 
       const abiCoder = new ethers.utils.AbiCoder();
       const cArgs = abiCoder.encode(types, contract.constructorArguments);
+      const decodedArguments = abiCoder.decode(types, cArgs);
+
+      const contractDeploymentData = contract.bytecode + cArgs.slice(2);
+
+      console.log(contractDeploymentData)
 
       const data = {
         apikey: "FGF5BR31KUH57GMZ15NXKQ1KS3UFP632GD", // Assuming you have stored the API key directly in the localStorage
         module: "contract",
         action: "verifysourcecode",
         contractaddress: contract.address,
-        sourceCode: contract.sourceCode,
+        sourceCode: contract.sourceCode, // This should be the full source code of the contract
         contractname: contract.contractName,
-        compilerversion: contract.compilerVersion,
-        optimizationUsed: 0, // Adjust as necessary based on your contract's settings
-        runs: 0, // Adjust as necessary based on your contract's settings
-        constructorArguements: cArgs.slice(2),
+        compilerversion: "v0.8.21+commit.d9974bed", // Adjust this to your actual compiler version
+        optimizationUsed: 1, // Adjust based on your contract's settings
+        runs: 200, // Adjust based on your contract's settings
+        constructorArguements: cArgs.slice(2), // ABI encoded constructor arguments
       };
 
       try {

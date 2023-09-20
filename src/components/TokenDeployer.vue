@@ -278,7 +278,7 @@ export default {
             [
               this.tokenDetails.contractName,
               this.tokenDetails.contractTicker,
-              contractSupplyInWei,
+              this.tokenDetails.contractSupply,
             ]
           );
         } else {
@@ -345,7 +345,7 @@ export default {
             constructorArguments = [
               this.tokenDetails.contractName,
               this.tokenDetails.contractTicker,
-              contractSupplyInWei,
+              this.tokenDetails.contractSupply,
             ];
           } else {
             const maxWalletAmountInWei = contractSupplyInWei
