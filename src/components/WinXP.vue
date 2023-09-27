@@ -152,7 +152,7 @@ export default {
     window.ethereum.on("accountsChanged", (accounts) => {
       console.log("accounts changed");
       this.connectedAccount = accounts[0];
-      this.updateBalances();
+      // this.updateBalances();
     });
     this.changeBackgroundImage(this.bgImageUrl);
   },
@@ -176,7 +176,7 @@ export default {
     ...mapState(["windows"]),
   },
   methods: {
-    changeTheme(theme) {
+    changeTheme() {
       const setInputFieldStyles = (borderColor, backgroundColor, textColor) => {
         document.documentElement.style.setProperty(
           "--input-border-color",
@@ -566,12 +566,12 @@ export default {
       }
     },
 
-    handleKeyDown(event) {
-      // this.hideBootupScreen();
-      // if (event.keyCode === 27) {
-      //   this.closed = false;
-      // }
-    },
+    // handleKeyDown(event) {
+    //   // this.hideBootupScreen();
+    //   // if (event.keyCode === 27) {
+    //   //   this.closed = false;
+    //   // }
+    // },
     playSong(target) {
       for (const item of this.playlistItems) {
         item.classList.remove("active");
@@ -669,6 +669,10 @@ export default {
   /* animation: fadeIn 1.5s ease-in-out; */
   background-image: var(--bg-image, url("https://i.imgur.com/U0EJEUa.jpeg"));
   background-size: cover;
+
+  /* Add blur effect */
+  backdrop-filter: blur(50px); /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(50px); /* For older versions of Safari/Chrome */
 }
 
 /* Disable animation for Firefox */

@@ -13,6 +13,7 @@
       <option value="oceanBlue">Ocean Blue</option>
       <option value="warm">Warm</option>
       <option value="cyberpunk">Cyberpunk</option>
+      <!-- <option value="darkRed"></option> -->
     </select>
 
     <label for="bg-image">Background Image URL: </label>
@@ -170,6 +171,52 @@ export default {
           "#e0e0e0"
         );
         setInputFieldStyles("#ccc", "#ffffff", "#000");
+      } else if (this.selectedTheme === "darkRed") {
+        // Theme: Dark Red
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#8b0000"
+        );
+        document.documentElement.style.setProperty("--bg-color", "#330000");
+        document.documentElement.style.setProperty("--text-color", "#ff4040");
+        document.documentElement.style.setProperty(
+          "--component-bg-color",
+          "#550000"
+        );
+        document.documentElement.style.setProperty("--border-color", "#660000");
+        document.documentElement.style.setProperty(
+          "--box-shadow",
+          "0 0 5px rgba(102, 0, 0, 0.5)"
+        );
+        document.documentElement.style.setProperty(
+          "--title-bg-color",
+          "#8b0000"
+        );
+        document.documentElement.style.setProperty(
+          "--button-bg-color",
+          "#aa0000"
+        );
+        document.documentElement.style.setProperty(
+          "--content-bg-color",
+          "#440000"
+        );
+        document.documentElement.style.setProperty(
+          "--focused-border-color",
+          "#ff4040"
+        );
+        document.documentElement.style.setProperty(
+          "--menu-item-hover-bg-color",
+          "#ff0000"
+        );
+        document.documentElement.style.setProperty(
+          "--submenu-bg-color",
+          "#440000"
+        );
+        document.documentElement.style.setProperty(
+          "--taskbar-logo-hover-bg-color",
+          "#ff4040"
+        );
+        setInputFieldStyles("#660000", "#440000", "#ff4040");
       } else if (this.selectedTheme === "cyberpunk") {
         document.documentElement.style.setProperty(
           "--button-hover-bg-color",

@@ -383,6 +383,9 @@ export default {
             JSON.stringify(deployedContracts)
           );
 
+          this.$root.$emit("tokenDeployed");
+          console.log("tokenDeployed event emitted");
+
           this.$store.dispatch("openWindow", {
             id: 5,
           });
