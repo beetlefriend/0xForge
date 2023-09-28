@@ -387,22 +387,23 @@ export default {
 
             if (checkResponse.data.result !== "Pending in queue") {
               clearInterval(verificationCheckInterval);
-              if (checkResponse.data.status == "1") {
+
+              // Check for the "Unable to locate ContractCode" message first
+              if (
+                checkResponse.data.result.includes(
+                  "Unable to locate ContractCode"
+                )
+              ) {
+                this.verificationStatus = "failure";
+                this.verificationMessage =
+                  "The contract was recently deployed, and it might not be indexed by block explorers yet. Please wait a few minutes and try again.";
+              } else if (checkResponse.data.status == "1") {
                 this.verificationStatus = "success";
                 this.verificationMessage = "Verification successful!";
                 this.isVerified = true;
               } else {
-                if (
-                  checkResponse.data.result.includes(
-                    "Unable to locate ContractCode"
-                  )
-                ) {
-                  this.verificationMessage =
-                    "The contract was recently deployed, and it might not be indexed by block explorers yet. Please wait a few minutes and try again.";
-                } else {
-                  this.verificationStatus = "failure";
-                  this.verificationMessage = checkResponse.data.result;
-                }
+                this.verificationStatus = "failure";
+                this.verificationMessage = checkResponse.data.result;
               }
             }
           }, 5000);
@@ -522,7 +523,7 @@ export default {
           this.transactionStatus = "Transaction in progress, please wait...";
           await result.wait();
           this.transactionStatus = `Transaction Successful: ${result.hash}`;
-          this.checkVerificationStatus();
+          await this.checkVerificationStatus();
         }
       } catch (error) {
         this.transactionStatus = `Error: ${error.message}`;
