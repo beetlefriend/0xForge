@@ -1,5 +1,8 @@
 <template>
   <div class="token-manager" v-if="contracts.length > 0">
+    {{ etherscanLink }}
+    <br />
+    {{ verificationApiLink }}
     <div class="main-content">
       <h2 class="token-manager-title">Token Manager</h2>
 
@@ -215,6 +218,9 @@ export default {
       verificationMessage: "",
       isVerified: false,
       isRenounced: false,
+      provider: null,
+      verificationApiLink: "",
+      etherscanLink: "",
     };
   },
   computed: {
@@ -244,6 +250,12 @@ export default {
   },
 
   async mounted() {
+    if (window.ethereum) {
+      window.ethereum.on("chainChanged", (chainId) => {
+        console.log("Network Changed");
+        this.setupNetworkLinks();
+      });
+    }
     this.isVerified = await this.checkVerificationStatus(this.selectedContract);
   },
   watch: {
@@ -262,10 +274,29 @@ export default {
       this.contracts =
         JSON.parse(localStorage.getItem("deployedContracts")) || [];
     },
+
+    async setupNetworkLinks() {
+      let network = await this.provider.getNetwork();
+      let networkData = network.name;
+      console.log(networkData);
+      // API Link
+      let apiLink;
+      let etherscanLink;
+      if (networkData === "goerli") {
+        apiLink = "https://api-goerli.etherscan.io/api";
+        etherscanLink = "https://goerli.etherscan.io/";
+      } else if (networkData === "homestead") {
+        apiLink = "https://api.etherscan.io/api";
+        etherscanLink = "https://etherscan.io/";
+      }
+
+      this.etherscanLink = etherscanLink;
+      this.verificationApiLink = apiLink;
+    },
     async checkVerificationStatus(contractAddress) {
       try {
         const response = await axios.get(
-          `https://api-goerli.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=FGF5BR31KUH57GMZ15NXKQ1KS3UFP632GD`
+          `${this.verificationApiLink}?module=contract&action=getabi&address=${contractAddress}&apikey=FGF5BR31KUH57GMZ15NXKQ1KS3UFP632GD`
         );
 
         console.log(response);
@@ -359,7 +390,7 @@ export default {
 
         const response = await axios({
           method: "post",
-          url: "https://api-goerli.etherscan.io/api",
+          url: this.verificationApiLink,
           data: qs.stringify(data),
           headers: {
             "content-type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -377,7 +408,7 @@ export default {
             };
             const checkResponse = await axios({
               method: "post",
-              url: "https://api-goerli.etherscan.io/api",
+              url: this.verificationApiLink,
               data: qs.stringify(checkData),
               headers: {
                 "content-type":
@@ -537,6 +568,10 @@ export default {
     },
   },
   created() {
+    this.provider = new ethers.providers.Web3Provider(window.ethereum);
+    // Determine current network and set up initial links
+    this.setupNetworkLinks();
+
     this.loadContractsFromLocalStorage();
     if (this.contracts.length > 0) {
       this.selectedContract = this.contracts[this.contracts.length - 1].address; // select the last (newest) contract

@@ -32,7 +32,7 @@
                 src="https://cdn-icons-png.flaticon.com/512/2165/2165640.png"
                 class="start-menu-icon"
               />
-              Tokencreator
+              Token Creator
             </li>
             <li class="start-menu-sub-item" @click="openTokenmanager">
               <img

@@ -531,6 +531,7 @@ export default {
       } else {
         appElement.style.backgroundImage =
           'var(--bg-image, url("https://i.imgur.com/U0EJEUa.jpeg"))';
+        appElement.style.backgroundSize = "";
         let bgImageUrl = this.bgImageUrl;
         if (bgImageUrl != "") {
           document.documentElement.style.setProperty(
