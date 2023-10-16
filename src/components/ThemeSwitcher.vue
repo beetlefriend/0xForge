@@ -28,7 +28,7 @@
       type="text"
       v-model="bgImageUrl"
     />
-    <button @click="changeBackgroundImage">Set Background</button>
+    <button @click="changeBackgroundImage" class="btn">Set Background</button>
 
     <label>
       <input
@@ -460,7 +460,7 @@ export default {
         );
         document.documentElement.style.setProperty(
           "--button-hover-bg-color",
-          "#4f5565"
+          "#1e211f"
         ); // A shade darker for warm theme
         setInputFieldStyles("#4f5565", "#292c37", "#ffffff"); // Adjusted color
       }
@@ -560,6 +560,7 @@ export default {
 </script>
 
 <style>
+
 .theme-switcher {
   display: flex;
   flex-direction: column;
@@ -583,16 +584,18 @@ export default {
 
 .theme-switcher button {
   padding: 5px 10px;
+  margin-top: 7px;
   border: 1px solid var(--border-color, #586e75);
-  border-radius: 5px;
+  border-radius: 3px;
   background-color: var(--button-bg-color, #292c37);
   color: var(--text-color, #ffffff);
   cursor: pointer;
   outline: none;
+  background-color: var(--component-bg-color, #292c37);
 }
 
 .theme-switcher button:hover {
-  background-color: var(--button-hover-bg-color, #3f4455);
+  background-color: var(--button-hover-bg-color, #292c34);
 }
 
 .theme-switcher input[type="text"] {

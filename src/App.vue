@@ -23,11 +23,17 @@ export default Vue.extend({
 <style>
 .theme--dark.v-application {
   font-family: myFirstFont !important;
+  color: var(--text-color, #000) !important;
   /* background-image: url("./assets/bg.png") !important;  */
   /* background-color: #37383d !important; */
   /* background-size: cover !important; */
   /* background-position: center; */
 }
+
+.theme--dark.v-application .v-card__text {
+  color: var(--text-color, #000) !important;
+}
+
 @font-face {
   font-family: myFirstFont;
   /* src: url("fonts/game_over.ttf"); */
@@ -40,17 +46,13 @@ export default Vue.extend({
 .v-card {
   background-color: var(--component-bg-color) !important;
   border: 1px solid var(--border-color) !important;
-  color: var(--text-color) !important;
+  color: var(--text-color, #000) !important;
 }
 
 /* For v-card-text */
-.v-card-text {
+/* .v-card-text {
   color: var(--text-color) !important;
-}
-
-:root {
-  --text-color: #ffffff; /* Default text color */
-}
+} */
 
 button:hover {
   background-color: var(--button-hover-bg-color);
@@ -58,7 +60,7 @@ button:hover {
 
 body,
 body * {
-  color: var(--text-color) !important;
+  color: var(--text-color);
 }
 
 body {
@@ -73,8 +75,6 @@ body {
 html {
   scroll-behavior: smooth !important;
 }
-
-
 
 /* .v-text-field input {
   font-size: 1em;

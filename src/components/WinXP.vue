@@ -1,6 +1,6 @@
 <template>
   <div>
-    <wallet-connect></wallet-connect>
+    <wallet-connect ></wallet-connect>
     <div id="appContainer" v-if="!closed && isDesktop">
       <div class="container"></div>
 
@@ -83,10 +83,10 @@
       >
         <template #logo>
           <img
-            src="../assets/logo-2.png"
-            alt="Logo"
-            width="30px"
-            style="margin: 4px"
+            src=""
+            alt="0xF"
+
+            style="width: 30px; margin-right: 10px; margin-bottom: 10px"
           />
         </template>
         <template #clock>
@@ -137,7 +137,7 @@ export default {
       useGradientBackground:
         JSON.parse(localStorage.getItem("useGradientBackground")) || false,
       selectedTheme: localStorage.getItem("selectedTheme") || "existing",
-      bgImageUrl: localStorage.getItem("bgImageUrl") || "",
+      bgImageUrl: localStorage.getItem("bgImageUrl") || "https://i.imgur.com/U0EJEUa.jpeg",
     };
   },
 
@@ -477,6 +477,10 @@ export default {
           "--taskbar-logo-hover-bg-color",
           "#4f5565"
         );
+        document.documentElement.style.setProperty(
+          "--button-hover-bg-color",
+          "#1e211f"
+        ); // A shade darker for warm theme
         setInputFieldStyles("#4f5565", "#292c37", "#ffffff"); // Adjusted color
       }
       localStorage.setItem("selectedTheme", this.selectedTheme);
@@ -663,16 +667,12 @@ export default {
   }
 }
 
-
-
 #appContainer {
-  /* animation: fadeIn 1.5s ease-in-out; */
+  animation: fadeIn 1.5s ease-in-out;
   background-image: var(--bg-image, url("https://i.imgur.com/U0EJEUa.jpeg"));
   background-size: cover;
 
   /* Add blur effect */
-  backdrop-filter: blur(50px); /* Adjust the blur amount as needed */
-  -webkit-backdrop-filter: blur(50px); /* For older versions of Safari/Chrome */
 }
 
 /* Disable animation for Firefox */
@@ -706,7 +706,7 @@ export default {
 
 .console {
   background-color: black;
-  color: white;
+  color: white !important;
   /* border: 1px solid #ff0000; */
   padding: 20px;
   font-family: "Courier New", Courier, monospace;

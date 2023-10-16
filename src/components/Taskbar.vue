@@ -189,11 +189,13 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 40px;
+  height: 45px;
   background-color: var(--bg-color, #3f4455);
-  opacity: 1;
+  opacity: 0.95;
   box-shadow: var(--box-shadow, 0 0 5px rgba(167, 167, 167, 0.2));
   border: 1px solid var(--border-color, #282b36);
+  z-index: 1000;
+  
 }
 
 .taskbar.closed {
@@ -203,13 +205,21 @@ export default {
 .taskbar-logo {
   padding: 0 10px;
   margin-right: 10px;
-  border: 1px solid var(--border-color, #282b36);
+  border: 2px solid var(--border-color, #282b36);
   box-shadow: var(
     --box-shadow-inset,
     inset 0.05em 0.05em 0.05em 0 rgba(255, 255, 255, 0.5),
     inset -0.05em -0.05em 0.05em 0 rgba(0, 0, 0, 0.5)
   );
   background-color: var(--component-bg-color, #292c37);
+  width: 80px;
+  height: 95px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 60px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .taskbar-logo:hover {

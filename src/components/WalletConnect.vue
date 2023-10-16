@@ -3,12 +3,19 @@
     <div class="wallet-connect-content-wrapper">
       <div class="wallet-connect-overlay-content">
         <h1 class="wallet-connect-overlay-header">Welcome to 0xForge</h1>
-        <p class="wallet-connect-overlay-text">
-          To interact with the application, please connect your wallet
-        </p>
-        <button class="wallet-connect-overlay-button" @click="connectWallet">
-          Connect Now
-        </button>
+        <div v-if="isDesktop">
+          <p class="wallet-connect-overlay-text">
+            To interact with the application, please connect your wallet
+          </p>
+          <button class="wallet-connect-overlay-button" @click="connectWallet">
+            Connect Now
+          </button>
+        </div>
+        <div v-else>
+          <p class="wallet-connect-overlay-text">
+            This site currently does not work with mobile devices. Please return on your desktop device.
+          </p>
+        </div>
       </div>
       <div class="social-links">
         <a
@@ -54,6 +61,7 @@ export default {
   data() {
     return {
       walletConnected: false,
+      isDesktop: true,
     };
   },
   methods: {
@@ -65,10 +73,28 @@ export default {
         console.error("Error connecting to wallet:", error);
       }
     },
+    checkDevice() {
+      const width =
+        window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth;
+      const isPortable =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+
+      if (isPortable || width < 1000) {
+        this.isDesktop = false;
+      } else {
+        this.isDesktop = true;
+      }
+    },
   },
+
   mounted() {
     if (window.ethereum) {
       this.walletConnected = window.ethereum.isConnected();
+      this.checkDevice();
     }
   },
 };
@@ -114,7 +140,7 @@ export default {
   justify-content: center;
   height: 100vh;
   backdrop-filter: blur(5px);
-  z-index: 1000;
+  z-index: 9000;
 }
 
 .wallet-connect-overlay-content {

@@ -156,13 +156,26 @@ export default {
       },
       isLoading: false,
       errorMessage: "",
+      provider: null,
     };
   },
   created() {
+    this.provider = new ethers.providers.Web3Provider(window.ethereum);
+
     // window.ethereum.on("message", (error) => {
     //   console.error("MetaMask error:", error);
     //   this.errorMessage = error.message;
     // });
+  },
+  mounted() {
+    if (window.ethereum) {
+      window.ethereum.on("chainChanged", async (chainId) => {
+        console.log("Network Changed");
+
+        // Reinitialize the provider to connect to the new network
+        this.provider = new ethers.providers.Web3Provider(window.ethereum);
+      });
+    }
   },
   methods: {
     navigateToDetailsPage() {
@@ -365,6 +378,8 @@ export default {
               this.tokenDetails.sellTax,
             ];
           }
+          let network = await this.provider.getNetwork();
+          let networkData = network.name;
 
           deployedContracts.push({
             address: receipt.contractAddress,
@@ -376,6 +391,7 @@ export default {
             constructorArguments: constructorArguments, // saving constructor arguments
             compilerVersion: result.compilerVersion, // assuming that compiler version is available in result, if not please adjust
             contractType: this.selectedContractType, // saving contract type
+            network: networkData,
           });
 
           localStorage.setItem(

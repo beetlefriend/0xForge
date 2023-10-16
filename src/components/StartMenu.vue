@@ -194,8 +194,8 @@ export default {
   box-shadow: var(--box-shadow, 0 0 5px rgba(167, 167, 167, 0.2));
   width: 200px;
   height: 300px;
-  z-index: 9999;
-  opacity: 0.9;
+  z-index: 1;
+  opacity: 0.95;
   font-family: "Tahoma", sans-serif;
   font-size: 12px;
 }
@@ -249,7 +249,7 @@ export default {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
   width: 200px;
   height: auto;
-  z-index: 2;
+  z-index: 0;
   font-family: "Tahoma", sans-serif;
   font-size: 12px;
 }
